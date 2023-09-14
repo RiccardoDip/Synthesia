@@ -41,8 +41,11 @@ float interpolation;
 void setup()
 {
   frameRate(10);
-  size(1250,750,P3D); //screen proportions
-  o = new OscP5(this, 2346);
+  size(500,300,P3D); //screen proportions
+  o = new OscP5(this, 12000);
+  
+  NetInfo.print();
+  
   noStroke();
   
   minim = new Minim(this);
@@ -67,6 +70,8 @@ void setup()
   myClient = new Client(this, "127.0.0.1", 5000);
   
   screen = get();
+  
+  interpolation = 0.0;
 }
 void draw()
 {
@@ -106,21 +111,20 @@ void clientEvent(Client someClient) {
             println("Getting image from frame");
 
             if(screen != null){
-              println(screen.width);
-              println(screen.height);
-              println("Encoding");
+              // println(screen.width);
+              // println(screen.height);
+              // println("Encoding");
               byte[] encoded = jpg_v2.encode(screen, 0.5F);
               if(encoded.length > 32768){
                 encoded = subset(encoded,0,32768);
               }
               
-              println("encoded length:");
-            
-              println(encoded.length);
+              println("encoded length: " + encoded.length);
             
               println("Writing to server");
               myClient.write(encoded);
-              myClient.write(str(interpolation));
+              println("Interpolation in Draw: " + interpolation);
+              //myClient.write(str(interpolation));
             }
             
         }
@@ -223,5 +227,6 @@ class Waveform
 void oscEvent(OscMessage theMsg) {
   if(theMsg.checkAddrPattern("/Interpolation")==true) {
       interpolation = theMsg.get(0).floatValue();
+      println("Interpolation: " + interpolation);
   }
 }

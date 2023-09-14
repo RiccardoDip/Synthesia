@@ -8,7 +8,7 @@ import time
 import binascii
 import io
 
-RUN_ON_GPU = False
+RUN_ON_GPU = True
 CAMERA_ID = 0 # 0 for integrated cam, 1 for first external can ....
 WIDTH=1
 HEIGHT=1
@@ -54,6 +54,10 @@ def _transform(in_image,loaded,m_path):
     
     return np.asarray(med)
 
+    
+def on_change(value):
+    print(value) 
+
 if __name__ == '__main__':
 
     '''
@@ -86,10 +90,9 @@ if __name__ == '__main__':
     '''
     loaded = False
 
-    mpath = 'models/edtaonisl.model'
-    
-    def on_change(value):
-            print(value) 
+    path_to_models = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/presets/'
+
+    mpath = f'{path_to_models}edtaonisl.model'
             
     cv2.namedWindow('style')
     cv2.createTrackbar('slider', "style", 0, 100, on_change)
@@ -101,14 +104,12 @@ if __name__ == '__main__':
         #cv2.imshow("style", frame)
         #rval, frame = vc.read()
 
-
-
-        print("reading from socket")
-        print("sending")
+        # print("sending")
         client.send(b"go")
+        # print("reading from socket")
         strng = client.recv(32768)
-        interpolation = client.recv(1024).decode("utf8")
-        #print(interpolation.decode("utf8"))
+        # interpolation = client.recv(1024).decode("utf8")
+        # print(interpolation)
 
         '''
         # Open plaintext file with hex
@@ -129,7 +130,7 @@ if __name__ == '__main__':
         # print whether JPEG, PNG, etc.
         print(picture.format)
         '''
-
+        print("undecoded")
         img = cv2.imdecode(np.frombuffer(strng, dtype=np.uint8), 1)
 
         img_shape = img.shape
@@ -148,45 +149,42 @@ if __name__ == '__main__':
         cv2.imshow("style", img)
         
             
-        print("immagine mostrata")
-        #print(time.time() - start, 'sec')
+        # print("immagine mostrata")
+        # print(time.time() - start, 'sec')
         
         loaded=True
-
-        key = cv2.waitKey(1)
-
     
         key = cv2.waitKey(1)
         if key == 49: # 1
-            mpath='models/edtaonisl.model'
+            mpath=f'{path_to_models}edtaonisl.model'
             loaded=False
             print("Pressed 1")
         if key == 50: # 2
-            mpath='models/natasha-russu.model'
+            mpath=f'{path_to_models}natasha-russu.model'
             loaded=False
             print("Pressed 2")
         if key == 51: # 3
-            mpath='models/kandinsky_e2_crop512.model'
+            mpath=f'{path_to_models}kandinsky_e2_crop512.model'
             loaded=False
             print("Pressed 3")
         if key == 52: # 4
-            mpath='models/composition.model'
+            mpath=f'{path_to_models}composition.model'
             loaded=False
             print("Pressed 4")
         if key == 53: # 5
-            mpath='models/scream-style.model'
+            mpath=f'{path_to_models}scream-style.model'
             loaded=False
             print("Pressed 5")
         if key == 54: # 6
-            mpath='models/candy.model'
+            mpath=f'{path_to_models}candy.model'
             loaded=False
             print("Pressed 6")
         if key == 55: # 7
-            mpath='models/kanagawa.model'
+            mpath=f'{path_to_models}kanagawa.model'
             loaded=False
             print("Pressed 7")
         if key == 56: # 8
-            mpath='models/fur.model'
+            mpath=f'{path_to_models}fur.model'
             loaded=False
             print("Pressed 8")
         if key == 57: # 9
