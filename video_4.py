@@ -65,13 +65,9 @@ def on_change(value):
 
 
 if __name__ == '__main__':
+    path_to_presets = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/presets/'
+    path_to_user_models = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/'
 
-    '''
-    cv2.namedWindow('style')
-    vc = cv2.VideoCapture(CAMERA_ID)
-    vc.set(cv2.CAP_PROP_FRAME_WIDTH,WIDTH)
-    vc.set(cv2.CAP_PROP_FRAME_HEIGHT,HEIGHT)
-    '''
     address = ('127.0.0.1', 5000)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -84,36 +80,28 @@ if __name__ == '__main__':
 
     print('got connected from', addr)
 
-    '''
-    if vc.isOpened():
-        rval, frame = vc.read()
-        loaded = False
-        mpath = 'models/edtaonisl.model'
-    else:
-        rval = False
-    '''
     loaded = False
-
-    path_to_presets = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/presets/'
-
-    mpath = f'{path_to_presets}edtaonisl.model'
+    closed = False
 
     cv2.namedWindow('style')
-    cv2.createTrackbar('slider', 'style', 0, 100, on_change)
+    cv2.createTrackbar('slider', 'style', 0, 8, on_change)
 
-    time.sleep(2)
+    mpath = 'none'
 
     while True:
-        # cv2.imshow('style', frame)
-        # rval, frame = vc.read()
 
-        # print('sending')
-        client.send(b'f')
-        # print('reading from socket')
-        strng = client.recv(32768)
-        client.send(b'i')
-        interpolation = client.recv(1024).decode('utf8')
-        print(interpolation)
+        try:
+            # print('sending')
+            client.send(b'f')
+            # print('reading from socket')
+            strng = client.recv(32768)
+            client.send(b'i')
+            interpolation = client.recv(1024).decode('utf8')
+            print(interpolation)
+        except:
+            # recreate the socket and reconnect
+            print("socket disconnected from server")
+            break
 
         '''
         # Open plaintext file with hex
@@ -134,6 +122,7 @@ if __name__ == '__main__':
         # print whether JPEG, PNG, etc.
         print(picture.format)
         '''
+
         print('undecoded')
         img = cv2.imdecode(np.frombuffer(strng, dtype=np.uint8), 1)
 
@@ -158,10 +147,10 @@ if __name__ == '__main__':
 
         key = cv2.waitKey(1)
         if interpolation == '0.0':
-            mpath = f'{path_to_presets}edtaonisl.model'
+            mpath = f'{path_to_presets}starrynight.model'
             loaded = False
         if interpolation == '1.0':
-            mpath = f'{path_to_presets}natasha-russu.model'
+            mpath = f'{path_to_presets}picasso.model'
             loaded = False
         if interpolation == '2.0':
             mpath = f'{path_to_presets}kandinsky_e2_crop512.model'
@@ -191,4 +180,14 @@ if __name__ == '__main__':
             break
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-    cv2.destroyWindow('preview')
+    
+        # close with X
+        if cv2.getWindowProperty('style', cv2.WND_PROP_VISIBLE) < 1:
+            closed = True
+            break
+
+    print("disconnecting socket from client")
+    # TODO
+
+    if not closed:
+        cv2.destroyWindow('style')

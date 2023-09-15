@@ -79,13 +79,12 @@ void setup()
   controlCharF = 'f';
   controlCharI = 'i';
 }
+
 void draw()
 {
   background(0);
   directionalLight(126, 126, 126, sin(radians(frameCount)), cos(radians(frameCount)), 1);
   ambientLight(102, 102, 102);
-
-
 
   if (frameCount>200)
   {
@@ -143,9 +142,6 @@ void clientEvent(Client someClient) {
 }
 
 
-
-
-
 void stop()
 {
   // always close Minim audio classes when you finish with them
@@ -154,6 +150,7 @@ void stop()
   minim.stop();
   super.stop();
 }
+
 class Waveform
 {
   float x, y, z;
