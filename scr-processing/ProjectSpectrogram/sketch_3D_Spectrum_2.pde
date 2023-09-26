@@ -41,7 +41,7 @@ float minZ = 0;
 int gate = 0;
 PImage screen;
 float interpolation;
-char controlCharF, controlCharI;
+char controlCharF, controlCharI, controlCharQ;
 
 void setup()
 {
@@ -78,6 +78,7 @@ void setup()
 
   controlCharF = 'f';
   controlCharI = 'i';
+  controlCharQ = 'q';
 }
 
 void draw()
@@ -132,6 +133,8 @@ void clientEvent(Client someClient) {
         myClient.write(encoded);
       else if (dataIn == controlCharI)
         myClient.write(str(interpolation));
+      else if (dataIn == controlCharQ)
+        stop();
     }
   }
   catch (IOException e) {
@@ -144,11 +147,13 @@ void clientEvent(Client someClient) {
 
 void stop()
 {
+  myClient.stop();
   // always close Minim audio classes when you finish with them
   microphone.close();
   // always stop Minim before exiting
   minim.stop();
   super.stop();
+  exit();
 }
 
 class Waveform

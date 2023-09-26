@@ -4,9 +4,6 @@ from chainer import cuda, Variable, serializers
 from net import *
 import numpy as np
 from PIL import Image, ImageFilter
-import time
-import binascii
-import io
 
 RUN_ON_GPU = True
 CAMERA_ID = 0  # 0 for integrated cam, 1 for first external can ....
@@ -35,6 +32,7 @@ def _transform(in_image, loaded, m_path):
         if RUN_ON_GPU:
             cuda.get_device(0).use()  # assuming only one core
             model.to_gpu()
+        loaded = True
         print('loaded')
 
     xp = np if not RUN_ON_GPU else cuda.cupy
@@ -68,6 +66,7 @@ if __name__ == '__main__':
     path_to_presets = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/presets/'
     path_to_user_models = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/'
 
+    #address = ('192.168.178.103', 5000)
     address = ('127.0.0.1', 5000)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -77,16 +76,21 @@ if __name__ == '__main__':
     print('Waiting for the client...')
 
     client, addr = s.accept()
+    connected = True
 
     print('got connected from', addr)
 
     loaded = False
     closed = False
 
-    cv2.namedWindow('style')
-    cv2.createTrackbar('slider', 'style', 0, 8, on_change)
+    cv2.namedWindow('style', cv2.WINDOW_GUI_NORMAL)
+    #cv2.createTrackbar('slider', 'style', 0, 8, on_change)
 
     mpath = 'none'
+
+    last_interpolation = -1
+
+    # assert cv2.getWindowProperty('style', 0) >= 0, 'non è ancora aperto cazzo'
 
     while True:
 
@@ -97,10 +101,11 @@ if __name__ == '__main__':
             strng = client.recv(32768)
             client.send(b'i')
             interpolation = client.recv(1024).decode('utf8')
-            print(interpolation)
+            # print(interpolation)
         except:
             # recreate the socket and reconnect
-            print("socket disconnected from server")
+            connected = False
+            print('socket disconnected from server')
             break
 
         '''
@@ -123,12 +128,10 @@ if __name__ == '__main__':
         print(picture.format)
         '''
 
-        print('undecoded')
+        # print('undecoded')
         img = cv2.imdecode(np.frombuffer(strng, dtype=np.uint8), 1)
 
-        img_shape = img.shape
-
-        print(img_shape)
+        # print(img_shape)
 
         # print(strng)
 
@@ -143,51 +146,47 @@ if __name__ == '__main__':
         # print('immagine mostrata')
         # print(time.time() - start, 'sec')
 
-        loaded = True
-
+        interpolation = int(round(float(interpolation)))
+        # print(interpolation)
+        loaded = (interpolation == last_interpolation)
+        
         key = cv2.waitKey(1)
-        if interpolation == '0.0':
-            mpath = f'{path_to_presets}starrynight.model'
-            loaded = False
-        if interpolation == '1.0':
-            mpath = f'{path_to_presets}picasso.model'
-            loaded = False
-        if interpolation == '2.0':
-            mpath = f'{path_to_presets}kandinsky_e2_crop512.model'
-            loaded = False
-        if interpolation == '3.0':
-            mpath = f'{path_to_presets}composition.model'
-            loaded = False
-        if interpolation == '4.0':
-            mpath = f'{path_to_presets}scream-style.model'
-            loaded = False
-        if interpolation == '5.0':
-            mpath = f'{path_to_presets}candy.model'
-            loaded = False
-        if interpolation == '6.0':
+        
+        if interpolation == 0:
+            mpath = f'{path_to_user_models}picasso/final_ep_picasso_5.model'
+            # loaded = False
+        if interpolation == 1:
+            mpath = f'{path_to_user_models}onde-overlay-75-25/final_ep_onde-overlay-75-25_8.model'   
+            # loaded = False
+        if interpolation == 2:
+            mpath = f'{path_to_user_models}onde-overlay-50-50/final_ep_onde-overlay-50-50_8.model'
+            # loaded = False
+        if interpolation == 3:
+            mpath = f'{path_to_user_models}onde-overlay-25-75/final_ep_onde-overlay-25-75_5.model'
+            # loaded = False
+        if interpolation == 4:
             mpath = f'{path_to_presets}kanagawa.model'
-            loaded = False
-        if interpolation == '7.0':
-            mpath = f'{path_to_presets}fur.model'
-            loaded = False
-        if interpolation == '8.0':
-            mpath = 'none'
-            loaded = False
+            # loaded = False
 
         if 'c' == chr(key & 0xFF):
             KEEP_COLORS = not KEEP_COLORS
         if 'q' == chr(key & 0xFF):
             break
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+
+        last_interpolation = interpolation
     
         # close with X
         if cv2.getWindowProperty('style', cv2.WND_PROP_VISIBLE) < 1:
             closed = True
             break
 
-    print("disconnecting socket from client")
-    # TODO
+    if connected:
+        print('disconnecting socket from client')
+        try:
+            client.send(b'q')
+        except:
+            print('disconnected already')
+    
 
     if not closed:
         cv2.destroyWindow('style')
