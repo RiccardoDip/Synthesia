@@ -16,6 +16,16 @@ KEEP_COLORS = False
 model = FastStyleNet()
 # from 6o6o's fork. https://github.com/6o6o/chainer-fast-neuralstyle/blob/master/generate.py
 
+path_to_presets = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/presets/'
+path_to_user_models = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/'
+
+m_path_dict = {
+    0: f'{path_to_user_models}picasso/final_ep_picasso_5.model',
+    1: f'{path_to_user_models}onde-overlay-75-25/final_ep_onde-overlay-75-25_8.model',
+    2: f'{path_to_user_models}onde-overlay-50-50/final_ep_onde-overlay-50-50_8.model',
+    3: f'{path_to_user_models}onde-overlay-25-75/final_ep_onde-overlay-25-75_5.model',
+    4: f'{path_to_presets}kanagawa.model'
+}
 
 def original_colors(original, stylized):
     h, s, v = original.convert('HSV').split()
@@ -59,15 +69,13 @@ def _transform(in_image, loaded, m_path):
 
 
 def on_change(value):
-    print(value)
-
+    #print(value)
+    return
 
 if __name__ == '__main__':
-    path_to_presets = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/presets/'
-    path_to_user_models = '/home/dargendanico/Scrivania/real-time-style-transfer/chainer-fast-neuralstyle/models/'
-
-    #address = ('192.168.178.103', 5000)
-    address = ('127.0.0.1', 5000)
+    # SOCKET CONNECTION
+    address = ('192.168.178.103', 5000)
+    #address = ('127.0.0.1', 5000)
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     s.bind(address)
@@ -83,8 +91,8 @@ if __name__ == '__main__':
     loaded = False
     closed = False
 
-    cv2.namedWindow('style', cv2.WINDOW_GUI_NORMAL)
-    #cv2.createTrackbar('slider', 'style', 0, 8, on_change)
+    cv2.namedWindow('style')
+    cv2.createTrackbar('slider', 'style', 0, 100, on_change)
 
     mpath = 'none'
 
@@ -95,79 +103,34 @@ if __name__ == '__main__':
     while True:
 
         try:
-            # print('sending')
+            # GET IMAGE AND DECODE
             client.send(b'f')
             # print('reading from socket')
             strng = client.recv(32768)
+            img = cv2.imdecode(np.frombuffer(strng, dtype=np.uint8), 1)
+            # GET INTERPOLATION VALUE
             client.send(b'i')
             interpolation = client.recv(1024).decode('utf8')
-            # print(interpolation)
         except:
-            # recreate the socket and reconnect
+            # couldn't send, connection is down
             connected = False
             print('socket disconnected from server')
             break
 
-        '''
-        # Open plaintext file with hex
-        #picture_hex = open(strng).read()
-
-        # Convert hex to binary data
-        #picture_bytes = binascii.unhexlify(picture_hex)
-
-        # Convert bytes to stream (file-like object in memory)
-        picture_stream = io.BytesIO(strng)
-
-        # Create Image object
-        picture = Image.open(picture_stream)
-
-        #display image
-        picture.show()
-
-        # print whether JPEG, PNG, etc.
-        print(picture.format)
-        '''
-
-        # print('undecoded')
-        img = cv2.imdecode(np.frombuffer(strng, dtype=np.uint8), 1)
-
-        # print(img_shape)
-
-        # print(strng)
-
-        # cv2.imshow('style', img)
-
-        # start = time.time()
         img = cv2.resize(_transform(img, loaded, mpath),
                          (0, 0), fx=1.0, fy=1.0)
 
         cv2.imshow('style', img)
 
-        # print('immagine mostrata')
-        # print(time.time() - start, 'sec')
-
         interpolation = int(round(float(interpolation)))
-        # print(interpolation)
+        cv2.setTrackbarPos('slider','style', interpolation*25)
+        
         loaded = (interpolation == last_interpolation)
-        
-        key = cv2.waitKey(1)
-        
-        if interpolation == 0:
-            mpath = f'{path_to_user_models}picasso/final_ep_picasso_5.model'
-            # loaded = False
-        if interpolation == 1:
-            mpath = f'{path_to_user_models}onde-overlay-75-25/final_ep_onde-overlay-75-25_8.model'   
-            # loaded = False
-        if interpolation == 2:
-            mpath = f'{path_to_user_models}onde-overlay-50-50/final_ep_onde-overlay-50-50_8.model'
-            # loaded = False
-        if interpolation == 3:
-            mpath = f'{path_to_user_models}onde-overlay-25-75/final_ep_onde-overlay-25-75_5.model'
-            # loaded = False
-        if interpolation == 4:
-            mpath = f'{path_to_presets}kanagawa.model'
-            # loaded = False
 
+        if not loaded:
+            mpath = m_path_dict[interpolation]
+
+        key = cv2.waitKey(1)
         if 'c' == chr(key & 0xFF):
             KEEP_COLORS = not KEEP_COLORS
         if 'q' == chr(key & 0xFF):
