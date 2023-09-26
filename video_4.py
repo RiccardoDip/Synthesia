@@ -84,7 +84,7 @@ if __name__ == '__main__':
     closed = False
 
     cv2.namedWindow('style')
-    cv2.createTrackbar('slider', 'style', 0, 8, on_change)
+    cv2.createTrackbar('slider', 'style', 0, 100, on_change)
 
     mpath = 'none'
 
@@ -97,6 +97,7 @@ if __name__ == '__main__':
             strng = client.recv(32768)
             client.send(b'i')
             interpolation = client.recv(1024).decode('utf8')
+            cv2.setTrackbarPos('slider','style', interpolation)
             print(interpolation)
         except:
             # recreate the socket and reconnect
