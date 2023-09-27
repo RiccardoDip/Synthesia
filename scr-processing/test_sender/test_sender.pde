@@ -27,7 +27,7 @@ void mousePressed() {
   myMessage.add(counter);
   oscP5.send(myMessage, receiver);
   println("Message sent!");
-  println("Cycling");
-  counter += 1.0;
-  counter %= 9;
+  println(counter);
+  counter += 0.1;
+  counter %= 4;
 }
