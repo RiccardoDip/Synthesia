@@ -73,11 +73,11 @@ def DisplayImage1(event):
         or event.data.endswith(".jpeg")
     ):
         print("entrato2")
-        image1 = customtkinter.CTkImage(Image.open(event.data), size=(100, 100))
-        image_display1.configure(
-            app, image=image1, text=None, width=100, height=100, state=DISABLED
-        )
-        image_display1.place(relx=0.2, rely=0.70, anchor=CENTER)
+        im1 = Image.open(event.data)
+        image1 = customtkinter.CTkImage(im1,size=(100, 100))
+        image_display1.configure(app,image=image1,text=None,width=100, height=100, state=DISABLED)
+        image_display1.place(relx=0.2,rely=0.70,anchor=CENTER)
+        im1.save("assets/01.png")
         frame1.place_forget()
 
 
@@ -96,11 +96,11 @@ def DisplayImage2(event):
         or event.data.endswith(".jpeg")
     ):
         print("entrato2")
-        image2 = customtkinter.CTkImage(Image.open(event.data), size=(100, 100))
-        image_display2.configure(
-            app, image=image2, text=None, width=100, height=100, state=DISABLED
-        )
-        image_display2.place(relx=0.4, rely=0.70, anchor=CENTER)
+        im2 = Image.open(event.data)
+        image2 = customtkinter.CTkImage(im2,size=(100, 100))
+        image_display2.configure(app,image=image2,text=None,width=100, height=100, state=DISABLED)
+        image_display2.place(relx=0.4,rely=0.70,anchor=CENTER)
+        im2.save("assets/02.png")
         frame2.place_forget()
 
 
@@ -119,11 +119,11 @@ def DisplayImage3(event):
         or event.data.endswith(".jpeg")
     ):
         print("entrato2")
-        image3 = customtkinter.CTkImage(Image.open(event.data), size=(100, 100))
-        image_display3.configure(
-            app, image=image3, text=None, width=100, height=100, state=DISABLED
-        )
-        image_display3.place(relx=0.6, rely=0.70, anchor=CENTER)
+        im3 = Image.open(event.data)
+        image3 = customtkinter.CTkImage(im3,size=(100, 100))
+        image_display3.configure(app,image=image3,text=None,width=100, height=100, state=DISABLED)
+        image_display3.place(relx=0.6,rely=0.70,anchor=CENTER)
+        im3.save("assets/03.png")
         frame3.place_forget()
 
 
@@ -142,11 +142,11 @@ def DisplayImage4(event):
         or event.data.endswith(".jpeg")
     ):
         print("entrato2")
-        image4 = customtkinter.CTkImage(Image.open(event.data), size=(100, 100))
-        image_display4.configure(
-            app, image=image4, text=None, width=100, height=100, state=DISABLED
-        )
-        image_display4.place(relx=0.8, rely=0.70, anchor=CENTER)
+        im4 = Image.open(event.data)
+        image4 = customtkinter.CTkImage(im4,size=(100, 100))
+        image_display4.configure(app,image=image4,text=None,width=100, height=100, state=DISABLED)
+        image_display4.place(relx=0.8,rely=0.70,anchor=CENTER)
+        im4.save("assets/04.png")
         frame4.place_forget()
 
 
