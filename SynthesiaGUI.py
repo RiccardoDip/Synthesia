@@ -197,7 +197,7 @@ def generation_process():
     # append_list('-ss', instr_list)
     # append_list('-ts', time_list)
     # style_frames.module_run()
-    arguments = f"-i ../Music-Visualizer/output/{fname}.mp4 -od output"
+    arguments = f"-i ../Music-Visualizer/output/{fname}.mp4 -d output"
     arguments += append_list(" -ss", instr_list)
     arguments += append_list(" -ts", time_list)
     os.system(
