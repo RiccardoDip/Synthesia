@@ -32,10 +32,12 @@ def select_midi_seq():
             app, text="MIDI file loaded correctly", text_color="lightgreen"
         )
         alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        instButton.configure(state="normal")
 
     else:
         alertWF.configure(app, text="Please choose a MIDI FIle", text_color="red")
         alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        instButton.configure(state=DISABLED)
     root.destroy()
 
 
@@ -51,10 +53,12 @@ def DisplayMidiFile(event):
             app, text="MIDI file loaded correctly", text_color="lightgreen"
         )
         alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        instButton.configure(state="normal")
 
     else:
         alertWF.configure(app, text="Please choose a MIDI FIle", text_color="red")
         alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        instButton.configure(state=DISABLED)
     print(file_path)
 
 
@@ -416,7 +420,7 @@ inst_slider.set(0)
 inst_slider.place(relx=0.5, rely=0.35, anchor=CENTER)
 
 
-instButton = customtkinter.CTkButton(app, text="Generate Instruments", command=generate)
+instButton = customtkinter.CTkButton(app, text="Generate Instruments", command=generate,state=DISABLED)
 instButton.place(relx=0.5, rely=0.40, anchor=CENTER)
 
 Inst1Btn = customtkinter.CTkButton(
