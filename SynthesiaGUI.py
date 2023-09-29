@@ -151,6 +151,7 @@ def DisplayImage4(event):
 
 
 def generation_process():
+    textboxInfo.configure(app,text="Creating Video",text_color="white")
     global audio_note_list, z_preview, notes
     instr_list, time_list = create_sequences()
     gansynth.generate_audio(model_gansynth, z_preview, notes, instr_list, time_list)
@@ -161,6 +162,7 @@ def generation_process():
 def generate():
     global audio_note_list, z_preview, notes
     try:
+        textboxInfo.configure("Generating instruments")
         print("clicked")
         # print(path_var.get())
         # print(display_inst.get())
@@ -259,6 +261,7 @@ def generate():
             if image_display4.winfo_viewable() == 1:
                 frame4.place_forget()
         # finishLabel.configure(text="Video Generated!")
+        textboxInfo.configure(app,text="Instruments Generated!\n Drop style images and select transition time")  
         #
     except:
         print("error")
@@ -311,10 +314,11 @@ def create_sequences():
 
         if inst_label._text == 4:
             if transition1_value._text == transition2_value._text:
-                alert.configure(
-                    app, text="Transition values must be different!", text_color="red"
-                )
-                alert.place(relx=0.5, rely=0.90, anchor=CENTER)
+                # alert.configure(
+                #     app, text="Transition values must be different!", text_color="red"
+                # )
+                # alert.place(relx=0.5, rely=0.90, anchor=CENTER)
+                textboxInfo.configure(app,text="Transition values must be different!",text_color="red")
                 print("Values must be different!")
                 exit()
             else:
@@ -339,9 +343,10 @@ def create_sequences():
 
 
 app = TkinterDnD.Tk()
-app.geometry("820x680")
+app.geometry("780x680")
+app.resizable(0,0)
 app.title("Synthesia")
-app.config(bg="#39393F")
+app.config(bg='#39393F')
 
 image_display1 = customtkinter.CTkButton(
     app, text=None, width=100, height=100, state=DISABLED
@@ -491,6 +496,9 @@ textbox4 = customtkinter.CTkLabel(
 textbox4.pack(side=LEFT)
 textbox4.drop_target_register(DND_FILES)
 textbox4.dnd_bind("<<Drop>>", DisplayImage4)
+
+textboxInfo = customtkinter.CTkLabel(app, width=300, height = 70,text="Welcome to Synthesia!",text_color='white',bg_color="grey")
+textboxInfo.place(relx=0.2,rely=0.90,anchor=CENTER)
 
 gsButton = customtkinter.CTkButton(
     app, text="Create timbre morphing", command=generation_process
