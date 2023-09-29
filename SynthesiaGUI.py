@@ -8,12 +8,15 @@ from tkinter import filedialog
 import sys
 import os
 
-sys.path.append("/home/dargendanico/Scrivania/magenta")
-# sys.path.append("/home/dargendanico/Scrivania/Music-Visualizer")
-# sys.path.append("/home/dargendanico/Scrivania/style-transfer-video-processor")
-import gansynth
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-# import __main__
+
+sys.path.append("/home/dargendanico/Scrivania/magenta")
+sys.path.append("/home/dargendanico/Scrivania/Music-Visualizer")
+# sys.path.append("/home/dargendanico/Scrivania/style-transfer-video-processor")
+proj_path = "/home/dargendanico/Scrivania"
+import gansynth
+import visualizer
 
 model_gansynth = gansynth.setup()
 audio_note_list = None
@@ -78,9 +81,11 @@ def DisplayImage1(event):
     ):
         print("entrato2")
         im1 = Image.open(event.data)
-        image1 = customtkinter.CTkImage(im1,size=(100, 100))
-        image_display1.configure(app,image=image1,text=None,width=100, height=100, state=DISABLED)
-        image_display1.place(relx=0.2,rely=0.70,anchor=CENTER)
+        image1 = customtkinter.CTkImage(im1, size=(100, 100))
+        image_display1.configure(
+            app, image=image1, text=None, width=100, height=100, state=DISABLED
+        )
+        image_display1.place(relx=0.2, rely=0.70, anchor=CENTER)
         im1.save("assets/01.png")
         frame1.place_forget()
 
@@ -101,9 +106,11 @@ def DisplayImage2(event):
     ):
         print("entrato2")
         im2 = Image.open(event.data)
-        image2 = customtkinter.CTkImage(im2,size=(100, 100))
-        image_display2.configure(app,image=image2,text=None,width=100, height=100, state=DISABLED)
-        image_display2.place(relx=0.4,rely=0.70,anchor=CENTER)
+        image2 = customtkinter.CTkImage(im2, size=(100, 100))
+        image_display2.configure(
+            app, image=image2, text=None, width=100, height=100, state=DISABLED
+        )
+        image_display2.place(relx=0.4, rely=0.70, anchor=CENTER)
         im2.save("assets/02.png")
         frame2.place_forget()
 
@@ -124,9 +131,11 @@ def DisplayImage3(event):
     ):
         print("entrato2")
         im3 = Image.open(event.data)
-        image3 = customtkinter.CTkImage(im3,size=(100, 100))
-        image_display3.configure(app,image=image3,text=None,width=100, height=100, state=DISABLED)
-        image_display3.place(relx=0.6,rely=0.70,anchor=CENTER)
+        image3 = customtkinter.CTkImage(im3, size=(100, 100))
+        image_display3.configure(
+            app, image=image3, text=None, width=100, height=100, state=DISABLED
+        )
+        image_display3.place(relx=0.6, rely=0.70, anchor=CENTER)
         im3.save("assets/03.png")
         frame3.place_forget()
 
@@ -147,20 +156,53 @@ def DisplayImage4(event):
     ):
         print("entrato2")
         im4 = Image.open(event.data)
-        image4 = customtkinter.CTkImage(im4,size=(100, 100))
-        image_display4.configure(app,image=image4,text=None,width=100, height=100, state=DISABLED)
-        image_display4.place(relx=0.8,rely=0.70,anchor=CENTER)
+        image4 = customtkinter.CTkImage(im4, size=(100, 100))
+        image_display4.configure(
+            app, image=image4, text=None, width=100, height=100, state=DISABLED
+        )
+        image_display4.place(relx=0.8, rely=0.70, anchor=CENTER)
         im4.save("assets/04.png")
         frame4.place_forget()
 
 
+# def append_list(arg, list):
+#     sys.argv.append(arg)
+#     for num in list:
+#         sys.argv.append(str(num))
+def append_list(arg, list):
+    to_append = arg
+    for num in list:
+        to_append += f" {num}"
+    return to_append
+
+
 def generation_process():
-    textboxInfo.configure(app,text="Creating Video",text_color="white")
+    fname = "test_name"
+    textboxInfo.configure(app, text="Creating Video", text_color="white")
     global audio_note_list, z_preview, notes
     instr_list, time_list = create_sequences()
-    gansynth.generate_audio(model_gansynth, z_preview, notes, instr_list, time_list)
+    gansynth.generate_audio(
+        model_gansynth, z_preview, notes, instr_list, time_list, fname
+    )
 
     # os.system('__main__.py -i gansynth/samples/generated_clip_1.mp3 -ff /usr/lib/ffmpeg')
+    basic_arg = sys.argv[0]
+    sys.argv += ["-i", f"gansynth/samples/{fname}.mp3", "-ff", "/usr/bin/ffmpeg"]
+    visualizer.main()
+
+    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    # import style_frames
+    # sys.argv = [basic_arg]
+    # sys.argv += ['-i', f'../Music-Visualizer/output/{fname}.mp4']
+    # append_list('-ss', instr_list)
+    # append_list('-ts', time_list)
+    # style_frames.module_run()
+    arguments = f"-i ../Music-Visualizer/output/{fname}.mp4 -od output"
+    arguments += append_list(" -ss", instr_list)
+    arguments += append_list(" -ts", time_list)
+    os.system(
+        f"python {proj_path}/style-transfer-video-processor/style_frames.py {arguments}"
+    )
 
 
 def generate():
@@ -265,7 +307,10 @@ def generate():
             if image_display4.winfo_viewable() == 1:
                 frame4.place_forget()
         # finishLabel.configure(text="Video Generated!")
-        textboxInfo.configure(app,text="Instruments Generated!\n Drop style images and select transition time")  
+        textboxInfo.configure(
+            app,
+            text="Instruments Generated!\n Drop style images and select transition time",
+        )
         #
     except:
         print("error")
@@ -322,7 +367,9 @@ def create_sequences():
                 #     app, text="Transition values must be different!", text_color="red"
                 # )
                 # alert.place(relx=0.5, rely=0.90, anchor=CENTER)
-                textboxInfo.configure(app,text="Transition values must be different!",text_color="red")
+                textboxInfo.configure(
+                    app, text="Transition values must be different!", text_color="red"
+                )
                 print("Values must be different!")
                 exit()
             else:
@@ -348,9 +395,9 @@ def create_sequences():
 
 app = TkinterDnD.Tk()
 app.geometry("780x680")
-app.resizable(0,0)
+app.resizable(0, 0)
 app.title("Synthesia")
-app.config(bg='#39393F')
+app.config(bg="#39393F")
 
 image_display1 = customtkinter.CTkButton(
     app, text=None, width=100, height=100, state=DISABLED
@@ -420,7 +467,9 @@ inst_slider.set(0)
 inst_slider.place(relx=0.5, rely=0.35, anchor=CENTER)
 
 
-instButton = customtkinter.CTkButton(app, text="Generate Instruments", command=generate,state=DISABLED)
+instButton = customtkinter.CTkButton(
+    app, text="Generate Instruments", command=generate, state=DISABLED
+)
 instButton.place(relx=0.5, rely=0.40, anchor=CENTER)
 
 Inst1Btn = customtkinter.CTkButton(
@@ -501,8 +550,15 @@ textbox4.pack(side=LEFT)
 textbox4.drop_target_register(DND_FILES)
 textbox4.dnd_bind("<<Drop>>", DisplayImage4)
 
-textboxInfo = customtkinter.CTkLabel(app, width=300, height = 70,text="Welcome to Synthesia!",text_color='white',bg_color="grey")
-textboxInfo.place(relx=0.2,rely=0.90,anchor=CENTER)
+textboxInfo = customtkinter.CTkLabel(
+    app,
+    width=300,
+    height=70,
+    text="Welcome to Synthesia!",
+    text_color="white",
+    bg_color="grey",
+)
+textboxInfo.place(relx=0.2, rely=0.90, anchor=CENTER)
 
 gsButton = customtkinter.CTkButton(
     app, text="Create timbre morphing", command=generation_process
