@@ -234,7 +234,7 @@ class Waveform
 
 void oscEvent(OscMessage theMsg) {
   if (theMsg.checkAddrPattern("/Interpolation")==true) {
-    interpolation = theMsg.get(0).floatValue();
+    interpolation = theMsg.get(0).floatValue()*4;
     println("Interpolation: " + interpolation);
   }
 }
