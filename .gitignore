@@ -8,3 +8,7 @@ local_model
 style_ref/*
 midway/*
 output/*
+
+magenta/*
+Music-Visualizer/*
+style-transfer-video-processor/*

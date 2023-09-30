@@ -8,17 +8,19 @@ from tkinter import filedialog
 import sys
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # disable GPU for gansynth
+# this is necessary due to problems combining tf compat v1 and v2
 
-
-sys.path.append("/home/dargendanico/Scrivania/magenta")
-sys.path.append("/home/dargendanico/Scrivania/Music-Visualizer")
-# sys.path.append("/home/dargendanico/Scrivania/style-transfer-video-processor")
-proj_path = "/home/dargendanico/Scrivania"
+basic_arg = sys.argv[0]
+sys.path.append("magenta")
+sys.path.append("Music-Visualizer")
 import gansynth
 import visualizer
 
+midway_output_dir = "midway"
+
 model_gansynth = gansynth.setup()
+gansynth.set_output_dir(midway_output_dir)
 audio_note_list = None
 z_preview = None
 notes = None
@@ -177,32 +179,42 @@ def append_list(arg, list):
 
 
 def generation_process():
-    fname = "test_name"
-    textboxInfo.configure(app, text="Creating Video", text_color="white")
     global audio_note_list, z_preview, notes
+    
+    fname = "synthesia"
+    textboxInfo.configure(app, text="Creating Audio", text_color="white")
     instr_list, time_list = create_sequences()
+
     gansynth.generate_audio(
-        model_gansynth, z_preview, notes, instr_list, time_list, fname
+        model_gansynth, z_preview, notes, instr_list, time_list, f'{fname}_gansynth'
     )
 
     # os.system('__main__.py -i gansynth/samples/generated_clip_1.mp3 -ff /usr/lib/ffmpeg')
-    basic_arg = sys.argv[0]
-    sys.argv += ["-i", f"gansynth/samples/{fname}.mp3", "-ff", "/usr/bin/ffmpeg"]
+    textboxInfo.configure(app, text="Creating Video Spectrogram", text_color="white")
+    sys.argv = [basic_arg]
+    sys.argv += ["-i", f"{midway_output_dir}/{fname}_gansynth.mp3", 
+                 "-ff", "/usr/bin/ffmpeg",
+                 "-o", f"{midway_output_dir}"]
     visualizer.main()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    textboxInfo.configure(app, text="Applying style transfer", text_color="white")
     # import style_frames
     # sys.argv = [basic_arg]
     # sys.argv += ['-i', f'../Music-Visualizer/output/{fname}.mp4']
     # append_list('-ss', instr_list)
     # append_list('-ts', time_list)
     # style_frames.module_run()
-    arguments = f"-i ../Music-Visualizer/output/{fname}.mp4 -d output"
+    # this unfortunately does not work because of the previews use of 
+    # tf.compat.v1 for gansynth, using a different process instead
+    arguments = f"-i {midway_output_dir}/{fname}_gansynth_spectr.mp4 -d output -o synthesia_art"
     arguments += append_list(" -ss", instr_list)
     arguments += append_list(" -ts", time_list)
-    os.system(
-        f"python {proj_path}/style-transfer-video-processor/style_frames.py {arguments}"
-    )
+    arguments += f" -mf {midway_output_dir} -sf style_ref"
+    arguments += " --fps 24"
+    os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
+    
+    textboxInfo.configure(app, text="Video saved in the ouput folder", text_color="white")
 
 
 def generate():
