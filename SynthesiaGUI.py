@@ -1,7 +1,7 @@
 import customtkinter
 import tkinter as tk
 from tkinter import *
-from tkinterdnd2 import *
+import tkinterdnd2 as tkdnd
 from PIL import Image
 from tkinter import filedialog
 
@@ -88,7 +88,7 @@ def DisplayImage1(event):
             app, image=image1, text=None, width=100, height=100, state=DISABLED
         )
         image_display1.place(relx=0.2, rely=0.70, anchor=CENTER)
-        im1.save("assets/01.png")
+        im1.save("style_ref/00.png")
         frame1.place_forget()
 
 
@@ -113,7 +113,7 @@ def DisplayImage2(event):
             app, image=image2, text=None, width=100, height=100, state=DISABLED
         )
         image_display2.place(relx=0.4, rely=0.70, anchor=CENTER)
-        im2.save("assets/02.png")
+        im2.save("style_ref/01.png")
         frame2.place_forget()
 
 
@@ -138,7 +138,7 @@ def DisplayImage3(event):
             app, image=image3, text=None, width=100, height=100, state=DISABLED
         )
         image_display3.place(relx=0.6, rely=0.70, anchor=CENTER)
-        im3.save("assets/03.png")
+        im3.save("style_ref/02.png")
         frame3.place_forget()
 
 
@@ -163,8 +163,15 @@ def DisplayImage4(event):
             app, image=image4, text=None, width=100, height=100, state=DISABLED
         )
         image_display4.place(relx=0.8, rely=0.70, anchor=CENTER)
-        im4.save("assets/04.png")
+        im4.save("style_ref/03.png")
         frame4.place_forget()
+
+
+def updateTextBox(textbox, new_text):
+    textbox.configure(state="normal") # Make the state normal
+    textbox.delete("0.0", "end")  # delete all text
+    textbox.insert("0.0", new_text)  # insert at line 0 character 0
+    textbox.configure(state="disabled")  # configure textbox to be read-only
 
 
 # def append_list(arg, list):
@@ -182,7 +189,8 @@ def generation_process():
     global audio_note_list, z_preview, notes
     
     fname = "synthesia"
-    textboxInfo.configure(app, text="Creating Audio", text_color="white")
+    # textboxInfo.configure(app, text="Creating Audio", text_color="white")
+    updateTextBox(textboxInfo, "Creating Audio")
     instr_list, time_list = create_sequences()
 
     gansynth.generate_audio(
@@ -190,7 +198,8 @@ def generation_process():
     )
 
     # os.system('__main__.py -i gansynth/samples/generated_clip_1.mp3 -ff /usr/lib/ffmpeg')
-    textboxInfo.configure(app, text="Creating Video Spectrogram", text_color="white")
+    # textboxInfo.configure(app, text="Creating Video Spectrogram", text_color="white")
+    updateTextBox(textboxInfo, "Creating Video Spectrogram")
     sys.argv = [basic_arg]
     sys.argv += ["-i", f"{midway_output_dir}/{fname}_gansynth.mp3", 
                  "-ff", "/usr/bin/ffmpeg",
@@ -198,7 +207,9 @@ def generation_process():
     visualizer.main()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-    textboxInfo.configure(app, text="Applying style transfer", text_color="white")
+    # textboxInfo.configure(app, text="Applying style transfer", text_color="white")
+    updateTextBox(textboxInfo, "Applying style transfer")
+
     # import style_frames
     # sys.argv = [basic_arg]
     # sys.argv += ['-i', f'../Music-Visualizer/output/{fname}.mp4']
@@ -214,13 +225,16 @@ def generation_process():
     arguments += " --fps 24"
     os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
     
-    textboxInfo.configure(app, text="Video saved in the ouput folder", text_color="white")
+    # textboxInfo.configure(app, text="Video saved in the ouput folder", text_color="white")
+    updateTextBox(textboxInfo, "Video saved in the ouput folder")
+
 
 
 def generate():
     global audio_note_list, z_preview, notes
     try:
-        textboxInfo.configure("Generating instruments")
+        # textboxInfo.configure("Generating instruments")
+        updateTextBox(textboxInfo, "Generating instruments")
         print("clicked")
         # print(path_var.get())
         # print(display_inst.get())
@@ -319,10 +333,11 @@ def generate():
             if image_display4.winfo_viewable() == 1:
                 frame4.place_forget()
         # finishLabel.configure(text="Video Generated!")
-        textboxInfo.configure(
-            app,
-            text="Instruments Generated!\n Drop style images and select transition time",
-        )
+        # textboxInfo.configure(
+        #     app,
+        #     text="Instruments Generated!\n Drop style images and select transition time",
+        # )
+        updateTextBox(textboxInfo, "Instruments Generated!\n Drop style images and select transition time")
         #
     except:
         print("error")
@@ -405,7 +420,7 @@ def create_sequences():
     return instr_list, time_list
 
 
-app = TkinterDnD.Tk()
+app = tkdnd.Tk()
 app.geometry("780x680")
 app.resizable(0, 0)
 app.title("Synthesia")
@@ -442,7 +457,7 @@ textboxMidi = customtkinter.CTkLabel(
     bg_color="grey",
 )
 textboxMidi.pack(side=LEFT)
-textboxMidi.drop_target_register(DND_FILES)
+textboxMidi.drop_target_register(tkdnd.DND_FILES)
 textboxMidi.dnd_bind("<<Drop>>", DisplayMidiFile)
 
 alert = customtkinter.CTkLabel(app, text="")
@@ -529,7 +544,7 @@ textbox1 = customtkinter.CTkLabel(
     frame1, height=15, width=30, text="Drop Style Here", text_color="white"
 )
 textbox1.pack(side=LEFT)
-textbox1.drop_target_register(DND_FILES)
+textbox1.drop_target_register(tkdnd.DND_FILES)
 textbox1.dnd_bind("<<Drop>>", DisplayImage1)
 
 frame2 = Frame(app, background="#39393F")
@@ -539,7 +554,7 @@ textbox2 = customtkinter.CTkLabel(
     frame2, height=15, width=30, text="Drop Style Here", text_color="white"
 )
 textbox2.pack(side=LEFT)
-textbox2.drop_target_register(DND_FILES)
+textbox2.drop_target_register(tkdnd.DND_FILES)
 textbox2.dnd_bind("<<Drop>>", DisplayImage2)
 
 frame3 = Frame(app, background="#39393F")
@@ -549,7 +564,7 @@ textbox3 = customtkinter.CTkLabel(
     frame3, height=15, width=30, text="Drop Style Here", text_color="white"
 )
 textbox3.pack(side=LEFT)
-textbox3.drop_target_register(DND_FILES)
+textbox3.drop_target_register(tkdnd.DND_FILES)
 textbox3.dnd_bind("<<Drop>>", DisplayImage3)
 
 frame4 = Frame(app, background="#39393F")
@@ -559,21 +574,32 @@ textbox4 = customtkinter.CTkLabel(
     frame4, height=15, width=30, text="Drop Style Here", text_color="white"
 )
 textbox4.pack(side=LEFT)
-textbox4.drop_target_register(DND_FILES)
+textbox4.drop_target_register(tkdnd.DND_FILES)
 textbox4.dnd_bind("<<Drop>>", DisplayImage4)
 
-textboxInfo = customtkinter.CTkLabel(
+# textboxInfo = customtkinter.CTkLabel(
+#     app,
+#     width=300,
+#     height=70,
+#     text="Welcome to Synthesia!",
+#     text_color="white",
+#     bg_color="grey",
+# )
+textboxInfo = customtkinter.CTkTextbox(
     app,
     width=300,
     height=70,
-    text="Welcome to Synthesia!",
     text_color="white",
-    bg_color="grey",
+    fg_color="grey",
 )
 textboxInfo.place(relx=0.2, rely=0.90, anchor=CENTER)
+textboxInfo.tag_config("center", justify="center")
+textboxInfo.insert("0.0", "Some example text!", "center")
+textboxInfo.configure(state="disabled")
+
 
 gsButton = customtkinter.CTkButton(
-    app, text="Create timbre morphing", command=generation_process
+    app, text="Start creating", command=generation_process
 )
 # progressPerc = customtkinter.CTkLabel(app,text="0%")
 # progressPerc.pack()
