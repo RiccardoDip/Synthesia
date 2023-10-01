@@ -1,11 +1,19 @@
 # CpacVideo
 ## OFFLINE
-### Environment setup
+### Environment setup LINUX
 Create a the conda environment to work locally with:
 ```
-conda env create -f magenta_no_gpu.yml
+conda env create -f mag_tf.yml
 ```
 If no problems occur, you can now activate the environment and work in it. 
+
+If you experience this problem: 
+```
+/lib/x86_64-linux-gnu/libstdc++.so.6: version 'GLIBCXX_3.4.29' not found
+```
+It can be solved with <a href="https://github.com/pybind/pybind11/discussions/3453#discussioncomment-7068951">this</a>.
+
+For other problems, please feel free to open an issue.
 
 If you have the possibility to work with CUDA, you can do the following to exploit your GPU:
 ```
@@ -19,4 +27,4 @@ You can verify the installation with:
 ```
 python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 ```
-This is an adaptation of the official tensorflow w/o GPU <a href="https://www.tensorflow.org/install/pip?hl=it">installation guide</a>.
+This is an adaptation of the official tensorflow w/o GPU <a href="https://www.tensorflow.org/install/pip?hl=it">installation guide</a>.r
