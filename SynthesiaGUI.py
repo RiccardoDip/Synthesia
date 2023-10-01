@@ -18,15 +18,16 @@ sys.path.append("Music-Visualizer")
 # import gansynth
 # import visualizer
 
-cwd = "."
-# cwd = os.getcwd()
 midway_output_dir = "midway"
 
-# model_gansynth = gansynth.setup()
-# gansynth.set_output_dir(midway_output_dir)
-# audio_note_list = None
-# z_preview = None
-# notes = None
+model_gansynth = gansynth.setup()
+
+input("Press Enter to continue...")
+
+gansynth.set_output_dir(midway_output_dir)
+audio_note_list = None
+z_preview = None
+notes = None
 
 
 def select_midi_seq():
@@ -219,13 +220,14 @@ def generation_process():
     # this unfortunately does not work because of the previews use of
     # tf.compat.v1 for gansynth, using a different process instead
     arguments = (
-        f"-i {cwd}/{midway_output_dir}/{fname}_gansynth_spectr.mp4 -d {cwd}/output -o synthesia_art"
+        f"-i {midway_output_dir}/{fname}_gansynth_spectr.mp4 -d output -o synthesia_art"
         # f"-i /Users/macdonald/Desktop/CPAC/real-time-style-transfer/scope_intero.mp4 -d {cwd}/output -o synthesia_art"
     )
     arguments += append_list(" -ss", instr_list)
     arguments += append_list(" -ts", time_list)
-    arguments += f" -mf {cwd}/{midway_output_dir} -sf {cwd}/style_ref"
-    arguments += " --fps 24"
+    arguments += f" -mf {midway_output_dir} -sf style_ref"
+    arguments += " --fps 10"
+    #arguments += f" -a {midway_output_dir}/{fname}_gansynth.mp3 --no_audio"
     # os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
     command = ["python", "style-transfer-video-processor/style_frames.py"]
     command += arguments.split(" ")
@@ -452,8 +454,6 @@ midi_path = customtkinter.CTkLabel(app, text="")
 
 path_var = customtkinter.StringVar()
 
-
-
 inst_label = customtkinter.CTkLabel(
     app, text="Select number of random instruments", text_color="white"
 )
@@ -476,16 +476,16 @@ instButton = customtkinter.CTkButton(
 instButton.place(relx=0.5, rely=0.30, anchor=CENTER)
 
 Inst1Btn = customtkinter.CTkButton(
-    app, text="Inst.1", #command=lambda: gansynth.play_audio_array(audio_note_list[0])
+    app, text="Inst.1", command=lambda: gansynth.play_audio_array(audio_note_list[0])
 )
 Inst2Btn = customtkinter.CTkButton(
-    app, text="Inst.2", #command=lambda: gansynth.play_audio_array(audio_note_list[1])
+    app, text="Inst.2", command=lambda: gansynth.play_audio_array(audio_note_list[1])
 )
 Inst3Btn = customtkinter.CTkButton(
-    app, text="Inst.3",  #command=lambda: gansynth.play_audio_array(audio_note_list[2])
+    app, text="Inst.3",  command=lambda: gansynth.play_audio_array(audio_note_list[2])
 )
 Inst4Btn = customtkinter.CTkButton(
-    app, text="Inst.4", #command=lambda: gansynth.play_audio_array(audio_note_list[3])
+    app, text="Inst.4", command=lambda: gansynth.play_audio_array(audio_note_list[3])
 )
 
 generating = customtkinter.BooleanVar(app, False)

@@ -8,7 +8,13 @@ Our perspective on Synthesia embraces its function as not only a dynamic tool fo
 ### Features
 SynthesiApp is a Python-based application that lets users load MIDI files and generate videos featuring audio spectrogram transformations, seamlessly transitioning between various styles. The audio generated undergoes a customizable timbre transfer process, giving users complete control over the video's style morphing timestamps.
 
-<video src="videos/synthesia_art.mp4" controls title="Title"></video>
+![Alt text](images/SynthesiaApp.png)
+
+### Workflow
+Through its GUI, SynthesiApp allows users to input a MIDI file for GANSynth to process, specifying the number of instruments for timbre interpolation (ranging from 2 to 4) and providing timestamps utilized by both GANSynth for audio file creation and StyleTransfer for generating the final video. The GUI also enables users to select the images used for style transfer. Meanwhile, behind the scenes, Music-Visualizer is employed to generate the spectrogram video, which is subsequently subjected to the style transfer process.
+
+![Alt text](images/gui_synthesia.png)
+### Instructions
 
 ### Environment setup LINUX
 Create a the conda environment to work locally with:
@@ -43,7 +49,14 @@ This is an adaptation of the official tensorflow w/o GPU <a href="https://www.te
 ### Features
 Synthesia-Live operates in real-time, applying style transfer techniques to the incoming audio's spectrogram. This process combines two distinct styles in accordance with the user's timbre morphing preferences.
 
+### Workflow
+Synthesia-Live operates by opening Nsynth (Magenta's software) within Ableton and using Ableton's Connection Kit to send OSC messages from Ableton to Processing. The OSC message sent pertains to the interpolation value between the two timbres being morphed by Nsynth. In Processing, an audio spectrogram is generated from the output of Nsynth. Python establishes a socket connection with Processing as soon as possible and begins requesting frames from the spectrogram drawn by Processing, along with the OSC interpolation value. Based on the interpolation value received in Python, the appropriate model is chosen for style transfer on the requested spectrogram frame. Once the style transfer is applied, the frame is displayed to the user on the screen.
+
+### Environment setup
+
+### Instructions
+To use Synthesia-Live, start by opening Nsynth in Ableton and send the interpolation value via the Connection Kit. Once you've confirmed that Nsynth's output is readable as your computer's audio input, run the SynthesiaLIVE.py file followed by the sketch_3D_Spectrum_2.pde file. Now, you can enjoy altering the Nsynth interpolation value and experience real-time visual feedback.
+
 ![Alt text](images/SynthesiaLiveSpec.png)
 
 ![Alt text](images/SynthesiaLiveStyled.png)
-### Environment setup
