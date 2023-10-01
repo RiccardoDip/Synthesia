@@ -69,9 +69,6 @@ def DisplayMidiFile(event):
 
 def DisplayImage1(event):
     print("entrato")
-    # event.data = event.data[1:len(event.data)-1]
-    # delete entire existing content
-    # textbox.delete("1.0","end")
     if event.data[0] == "{" and event.data[len(event.data) - 1] == "}":
         event.data = event.data[1 : len(event.data) - 1]
     print(event.data)
@@ -94,9 +91,6 @@ def DisplayImage1(event):
 
 def DisplayImage2(event):
     print("entrato")
-    # event.data = event.data[1:len(event.data)-1]
-    # delete entire existing content
-    # textbox.delete("1.0","end")
     if event.data[0] == "{" and event.data[len(event.data) - 1] == "}":
         event.data = event.data[1 : len(event.data) - 1]
     print(event.data)
@@ -119,9 +113,6 @@ def DisplayImage2(event):
 
 def DisplayImage3(event):
     print("entrato")
-    # event.data = event.data[1:len(event.data)-1]
-    # delete entire existing content
-    # textbox.delete("1.0","end")
     if event.data[0] == "{" and event.data[len(event.data) - 1] == "}":
         event.data = event.data[1 : len(event.data) - 1]
     print(event.data)
@@ -144,9 +135,6 @@ def DisplayImage3(event):
 
 def DisplayImage4(event):
     print("entrato")
-    # event.data = event.data[1:len(event.data)-1]
-    # delete entire existing content
-    # textbox.delete("1.0","end")
     if event.data[0] == "{" and event.data[len(event.data) - 1] == "}":
         event.data = event.data[1 : len(event.data) - 1]
     print(event.data)
@@ -167,11 +155,6 @@ def DisplayImage4(event):
         frame4.place_forget()
 
 
-def updateTextBox(textbox, new_text):
-    textbox.configure(state="normal") # Make the state normal
-    textbox.delete("0.0", "end")  # delete all text
-    textbox.insert("0.0", new_text)  # insert at line 0 character 0
-    textbox.configure(state="disabled")  # configure textbox to be read-only
 
 
 # def append_list(arg, list):
@@ -187,10 +170,18 @@ def append_list(arg, list):
 
 def generation_process():
     global audio_note_list, z_preview, notes
-    
+
     fname = "synthesia"
-    # textboxInfo.configure(app, text="Creating Audio", text_color="white")
-    updateTextBox(textboxInfo, "Creating Audio")
+    if inst_label._text == 4:
+        if transition1_value._text == transition2_value._text:
+            textboxInfo.configure(
+                app, text="Transition values must be different!", text_color="red"
+            )
+            app.update_idletasks()
+            print("Values must be different!")
+            return
+    textboxInfo.configure(app,text="Creating Audio", text_color="white")
+    app.update_idletasks()
     instr_list, time_list = create_sequences()
 
     gansynth.generate_audio(
@@ -198,17 +189,19 @@ def generation_process():
     )
 
     # os.system('__main__.py -i gansynth/samples/generated_clip_1.mp3 -ff /usr/lib/ffmpeg')
-    # textboxInfo.configure(app, text="Creating Video Spectrogram", text_color="white")
-    updateTextBox(textboxInfo, "Creating Video Spectrogram")
+    textboxInfo.configure(app,text="Creating Video Spectrogram", text_color="white")
+    app.update_idletasks()
+
     sys.argv = [basic_arg]
-    sys.argv += ["-i", f"{midway_output_dir}/{fname}_gansynth.mp3", 
+    sys.argv += ["-i", f"{midway_output_dir}/{fname}_gansynth.mp3",
                  "-ff", "/usr/bin/ffmpeg",
                  "-o", f"{midway_output_dir}"]
     visualizer.main()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
-    # textboxInfo.configure(app, text="Applying style transfer", text_color="white")
-    updateTextBox(textboxInfo, "Applying style transfer")
+    textboxInfo.configure(app,text="Applying style transfer", text_color="white")
+    app.update_idletasks()
+
 
     # import style_frames
     # sys.argv = [basic_arg]
@@ -216,7 +209,7 @@ def generation_process():
     # append_list('-ss', instr_list)
     # append_list('-ts', time_list)
     # style_frames.module_run()
-    # this unfortunately does not work because of the previews use of 
+    # this unfortunately does not work because of the previews use of
     # tf.compat.v1 for gansynth, using a different process instead
     arguments = f"-i {midway_output_dir}/{fname}_gansynth_spectr.mp4 -d output -o synthesia_art"
     arguments += append_list(" -ss", instr_list)
@@ -224,21 +217,18 @@ def generation_process():
     arguments += f" -mf {midway_output_dir} -sf style_ref"
     arguments += " --fps 24"
     os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
-    
-    # textboxInfo.configure(app, text="Video saved in the ouput folder", text_color="white")
-    updateTextBox(textboxInfo, "Video saved in the ouput folder")
+    textboxInfo.configure(app,text="Video saved in the ouput folder", text_color="white")
+    app.update_idletasks()
+
 
 
 
 def generate():
     global audio_note_list, z_preview, notes
     try:
-        # textboxInfo.configure("Generating instruments")
-        updateTextBox(textboxInfo, "Generating instruments")
+        textboxInfo.configure(app,text="Generating instruments", text_color="white")
+        app.update_idletasks()
         print("clicked")
-        # print(path_var.get())
-        # print(display_inst.get())
-        # print(inst_label._text)     # num
 
         num_instr = inst_label._text
         midi_path_str = midi_path._text
@@ -254,11 +244,12 @@ def generate():
 
             if inst_label._text == 2:
                 Inst1Btn.place(relx=0.2, rely=0.50, anchor=CENTER)
-                # transition1.place(relx=0.4,rely=0.55,anchor=CENTER)
                 Inst2Btn.place(relx=0.4, rely=0.50, anchor=CENTER)
                 gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
                 frame1.place(relx=0.2, rely=0.65, anchor=CENTER)
                 frame2.place(relx=0.4, rely=0.65, anchor=CENTER)
+                textboxInfo.configure(app,text="Instruments Generated! Drop style images, otherwise the default ones will be used", text_color="white")
+                app.update_idletasks()
 
                 if Inst3Btn.winfo_viewable() == 1:
                     Inst3Btn.place_forget()
@@ -284,8 +275,6 @@ def generate():
                 Inst1Btn.place(relx=0.2, rely=0.50, anchor=CENTER)
                 transition1.place(relx=0.4, rely=0.55, anchor=CENTER)
                 Inst2Btn.place(relx=0.4, rely=0.50, anchor=CENTER)
-                # trans_label.pack()
-                # transition2.place(relx=0.6,rely=0.55,anchor=CENTER)
                 Inst3Btn.place(relx=0.6, rely=0.50, anchor=CENTER)
                 gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
                 frame1.place(relx=0.2, rely=0.65, anchor=CENTER)
@@ -306,6 +295,8 @@ def generate():
                     frame3.place_forget()
                 if transition2.winfo_viewable() == 1:
                     transition2.place_forget()
+                textboxInfo.configure(app,text="Instruments Generated! Select transition time and drop style images, otherwise the default ones will be used", text_color="white")
+                app.update_idletasks()
 
             if inst_label._text == 4:
                 gsButton.place_forget()
@@ -322,6 +313,8 @@ def generate():
                 frame3.place(relx=0.6, rely=0.65, anchor=CENTER)
                 frame4.place(relx=0.8, rely=0.65, anchor=CENTER)
                 gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
+                textboxInfo.configure(app,text="Instruments Generated! Select transition time and drop style images, otherwise the default ones will be used", text_color="white")
+                app.update_idletasks()
             display_inst.set(True)
 
             if image_display1.winfo_viewable() == 1:
@@ -332,13 +325,6 @@ def generate():
                 frame3.place_forget()
             if image_display4.winfo_viewable() == 1:
                 frame4.place_forget()
-        # finishLabel.configure(text="Video Generated!")
-        # textboxInfo.configure(
-        #     app,
-        #     text="Instruments Generated!\n Drop style images and select transition time",
-        # )
-        updateTextBox(textboxInfo, "Instruments Generated!\n Drop style images and select transition time")
-        #
     except:
         print("error")
 
@@ -389,18 +375,6 @@ def create_sequences():
             instr_list += [1, 2]
 
         if inst_label._text == 4:
-            if transition1_value._text == transition2_value._text:
-                # alert.configure(
-                #     app, text="Transition values must be different!", text_color="red"
-                # )
-                # alert.place(relx=0.5, rely=0.90, anchor=CENTER)
-                textboxInfo.configure(
-                    app, text="Transition values must be different!", text_color="red"
-                )
-                print("Values must be different!")
-                exit()
-            else:
-                alert.place_forget()
             time_list.append(transition1_value._text)
             time_list.append(transition2_value._text)
             time_list.append(1)
@@ -423,8 +397,8 @@ def create_sequences():
 app = tkdnd.Tk()
 app.geometry("780x680")
 app.resizable(0, 0)
-app.title("Synthesia")
 app.config(bg="#39393F")
+
 
 image_display1 = customtkinter.CTkButton(
     app, text=None, width=100, height=100, state=DISABLED
@@ -440,10 +414,8 @@ image_display4 = customtkinter.CTkButton(
 )
 
 display_inst = customtkinter.BooleanVar(app, False)
-title = customtkinter.CTkLabel(app, text="SYNTHESIA")
+title = customtkinter.CTkLabel(app, text="SYNTHESIA",text_color="white")
 title.place(relx=0.5, rely=0.03, anchor=CENTER)
-# title.grid_rowconfigure(1, weight=1)
-# title.grid_columnconfigure(1, weight=1)
 
 frame = Frame(app, background="#39393F")
 frame.place(relx=0.5, rely=0.10, anchor=CENTER)
@@ -466,8 +438,6 @@ midi_path = customtkinter.CTkLabel(app, text="")
 
 
 path_var = customtkinter.StringVar()
-# path = customtkinter.CTkEntry(app, width=350, height = 40, textvariable=path_var)
-# path.place(relx=0.5,rely=0.10,anchor=CENTER)
 
 finishLabel = customtkinter.CTkLabel(app, text="or", text_color="white")
 finishLabel.place(relx=0.5, rely=0.15, anchor=CENTER)
@@ -500,18 +470,20 @@ instButton = customtkinter.CTkButton(
 instButton.place(relx=0.5, rely=0.40, anchor=CENTER)
 
 Inst1Btn = customtkinter.CTkButton(
-    app, text="Inst.1", command=lambda: gansynth.play_audio_array(audio_note_list[0])
+    app, text="Inst.1", #command=lambda: gansynth.play_audio_array(audio_note_list[0])
 )
 Inst2Btn = customtkinter.CTkButton(
-    app, text="Inst.2", command=lambda: gansynth.play_audio_array(audio_note_list[1])
+    app, text="Inst.2", #command=lambda: gansynth.play_audio_array(audio_note_list[1])
 )
 Inst3Btn = customtkinter.CTkButton(
-    app, text="Inst.3", command=lambda: gansynth.play_audio_array(audio_note_list[2])
+    app, text="Inst.3",  #command=lambda: gansynth.play_audio_array(audio_note_list[2])
 )
 Inst4Btn = customtkinter.CTkButton(
-    app, text="Inst.4", command=lambda: gansynth.play_audio_array(audio_note_list[3])
+    app, text="Inst.4", #command=lambda: gansynth.play_audio_array(audio_note_list[3])
 )
 
+generating = customtkinter.BooleanVar(app, False)
+generated = customtkinter.BooleanVar(app, False)
 
 trans_label = customtkinter.CTkLabel(app, text="Select the transition time")
 
@@ -538,74 +510,57 @@ transition3 = customtkinter.CTkComboBox(
 )
 
 frame1 = Frame(app, background="#39393F")
-# frame1.pack()
+
 
 textbox1 = customtkinter.CTkLabel(
-    frame1, height=15, width=30, text="Drop Style Here", text_color="white"
+    frame1, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
 textbox1.pack(side=LEFT)
 textbox1.drop_target_register(tkdnd.DND_FILES)
 textbox1.dnd_bind("<<Drop>>", DisplayImage1)
 
 frame2 = Frame(app, background="#39393F")
-# frame2.pack()
+
 
 textbox2 = customtkinter.CTkLabel(
-    frame2, height=15, width=30, text="Drop Style Here", text_color="white"
+    frame2, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
 textbox2.pack(side=LEFT)
 textbox2.drop_target_register(tkdnd.DND_FILES)
 textbox2.dnd_bind("<<Drop>>", DisplayImage2)
 
 frame3 = Frame(app, background="#39393F")
-# frame3.pack()
+
 
 textbox3 = customtkinter.CTkLabel(
-    frame3, height=15, width=30, text="Drop Style Here", text_color="white"
+    frame3, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
 textbox3.pack(side=LEFT)
 textbox3.drop_target_register(tkdnd.DND_FILES)
 textbox3.dnd_bind("<<Drop>>", DisplayImage3)
 
 frame4 = Frame(app, background="#39393F")
-# frame4.pack()
 
 textbox4 = customtkinter.CTkLabel(
-    frame4, height=15, width=30, text="Drop Style Here", text_color="white"
+    frame4, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
 textbox4.pack(side=LEFT)
 textbox4.drop_target_register(tkdnd.DND_FILES)
 textbox4.dnd_bind("<<Drop>>", DisplayImage4)
 
-# textboxInfo = customtkinter.CTkLabel(
-#     app,
-#     width=300,
-#     height=70,
-#     text="Welcome to Synthesia!",
-#     text_color="white",
-#     bg_color="grey",
-# )
-textboxInfo = customtkinter.CTkTextbox(
+textboxInfo = customtkinter.CTkLabel(
     app,
-    width=300,
-    height=70,
+    width=700,
+    height=20,
+    text="Welcome to Synthesia! Start by loading a MIDI File",
     text_color="white",
-    fg_color="grey",
+    bg_color="grey",
 )
-textboxInfo.place(relx=0.2, rely=0.90, anchor=CENTER)
-textboxInfo.tag_config("center", justify="center")
-textboxInfo.insert("0.0", "Some example text!", "center")
-textboxInfo.configure(state="disabled")
+textboxInfo.place(relx=0.5, rely=0.95, anchor=CENTER)
 
 
 gsButton = customtkinter.CTkButton(
     app, text="Start creating", command=generation_process
 )
-# progressPerc = customtkinter.CTkLabel(app,text="0%")
-# progressPerc.pack()
-
-# progressBar = customtkinter.CTkProgressBar(app,width= 400)
-# progressBar.set(0)
-# progressBar.pack(padx=10, pady=10)
 
 app.mainloop()
