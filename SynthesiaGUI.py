@@ -86,7 +86,7 @@ def DisplayImage1(event):
         )
         image_display1.place(relx=0.2, rely=0.70, anchor=CENTER)
         im1.save("style_ref/00.png")
-        frame1.place_forget()
+        textbox1.place_forget()
 
 
 def DisplayImage2(event):
@@ -108,7 +108,7 @@ def DisplayImage2(event):
         )
         image_display2.place(relx=0.4, rely=0.70, anchor=CENTER)
         im2.save("style_ref/01.png")
-        frame2.place_forget()
+        textbox2.place_forget()
 
 
 def DisplayImage3(event):
@@ -130,7 +130,7 @@ def DisplayImage3(event):
         )
         image_display3.place(relx=0.6, rely=0.70, anchor=CENTER)
         im3.save("style_ref/02.png")
-        frame3.place_forget()
+        textbox3.place_forget()
 
 
 def DisplayImage4(event):
@@ -152,7 +152,7 @@ def DisplayImage4(event):
         )
         image_display4.place(relx=0.8, rely=0.70, anchor=CENTER)
         im4.save("style_ref/03.png")
-        frame4.place_forget()
+        textbox4.place_forget()
 
 
 
@@ -246,27 +246,27 @@ def generate():
                 Inst1Btn.place(relx=0.2, rely=0.50, anchor=CENTER)
                 Inst2Btn.place(relx=0.4, rely=0.50, anchor=CENTER)
                 gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
-                frame1.place(relx=0.2, rely=0.65, anchor=CENTER)
-                frame2.place(relx=0.4, rely=0.65, anchor=CENTER)
+                textbox1.place(relx=0.2, rely=0.65, anchor=CENTER)
+                textbox2.place(relx=0.4, rely=0.65, anchor=CENTER)
                 textboxInfo.configure(app,text="Instruments Generated! Drop style images, otherwise the default ones will be used", text_color="white")
                 app.update_idletasks()
 
                 if Inst3Btn.winfo_viewable() == 1:
                     Inst3Btn.place_forget()
                     transition2.place_forget()
-                    frame3.place_forget()
+                    textbox3.place_forget()
                     image_display3.place_forget()
 
                 if Inst4Btn.winfo_viewable() == 1:
                     Inst4Btn.place_forget()
                     transition3.place_forget()
-                    frame4.place_forget()
+                    textbox4.place_forget()
                     image_display4.place_forget()
 
                 if image_display1.winfo_viewable() == 1:
-                    frame1.place_forget()
+                    textbox1.place_forget()
                 if image_display2.winfo_viewable() == 1:
-                    frame2.place_forget()
+                    textbox2.place_forget()
                 if transition1.winfo_viewable() == 1:
                     transition1.place_forget()
 
@@ -277,22 +277,22 @@ def generate():
                 Inst2Btn.place(relx=0.4, rely=0.50, anchor=CENTER)
                 Inst3Btn.place(relx=0.6, rely=0.50, anchor=CENTER)
                 gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
-                frame1.place(relx=0.2, rely=0.65, anchor=CENTER)
-                frame2.place(relx=0.4, rely=0.65, anchor=CENTER)
-                frame3.place(relx=0.6, rely=0.65, anchor=CENTER)
+                textbox1.place(relx=0.2, rely=0.65, anchor=CENTER)
+                textbox2.place(relx=0.4, rely=0.65, anchor=CENTER)
+                textbox3.place(relx=0.6, rely=0.65, anchor=CENTER)
 
                 if Inst4Btn.winfo_viewable() == 1:
                     Inst4Btn.place_forget()
                     transition3.place_forget()
-                    frame4.place_forget()
+                    textbox4.place_forget()
                     image_display4.place_forget()
 
                 if image_display1.winfo_viewable() == 1:
-                    frame1.place_forget()
+                    textbox1.place_forget()
                 if image_display2.winfo_viewable() == 1:
-                    frame2.place_forget()
+                    textbox2.place_forget()
                 if image_display3.winfo_viewable() == 1:
-                    frame3.place_forget()
+                    textbox3.place_forget()
                 if transition2.winfo_viewable() == 1:
                     transition2.place_forget()
                 textboxInfo.configure(app,text="Instruments Generated! Select transition time and drop style images, otherwise the default ones will be used", text_color="white")
@@ -308,23 +308,23 @@ def generate():
                 Inst3Btn.place(relx=0.6, rely=0.50, anchor=CENTER)
                 # transition3.place(relx=0.8,rely=0.55,anchor=CENTER)
                 Inst4Btn.place(relx=0.8, rely=0.50, anchor=CENTER)
-                frame1.place(relx=0.2, rely=0.65, anchor=CENTER)
-                frame2.place(relx=0.4, rely=0.65, anchor=CENTER)
-                frame3.place(relx=0.6, rely=0.65, anchor=CENTER)
-                frame4.place(relx=0.8, rely=0.65, anchor=CENTER)
+                textbox1.place(relx=0.2, rely=0.65, anchor=CENTER)
+                textbox2.place(relx=0.4, rely=0.65, anchor=CENTER)
+                textbox3.place(relx=0.6, rely=0.65, anchor=CENTER)
+                textbox4.place(relx=0.8, rely=0.65, anchor=CENTER)
                 gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
                 textboxInfo.configure(app,text="Instruments Generated! Select transition time and drop style images, otherwise the default ones will be used", text_color="white")
                 app.update_idletasks()
             display_inst.set(True)
 
             if image_display1.winfo_viewable() == 1:
-                frame1.place_forget()
+                textbox1.place_forget()
             if image_display2.winfo_viewable() == 1:
-                frame2.place_forget()
+                textbox2.place_forget()
             if image_display3.winfo_viewable() == 1:
-                frame3.place_forget()
+                textbox3.place_forget()
             if image_display4.winfo_viewable() == 1:
-                frame4.place_forget()
+                textbox4.place_forget()
     except:
         print("error")
 
@@ -509,42 +509,33 @@ transition3 = customtkinter.CTkComboBox(
     command=updateTransition3,
 )
 
-frame1 = Frame(app, background="#39393F")
-
 
 textbox1 = customtkinter.CTkLabel(
-    frame1, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
+    app, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
-textbox1.pack(side=LEFT)
 textbox1.drop_target_register(tkdnd.DND_FILES)
 textbox1.dnd_bind("<<Drop>>", DisplayImage1)
 
-frame2 = Frame(app, background="#39393F")
 
 
 textbox2 = customtkinter.CTkLabel(
-    frame2, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
+    app, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
-textbox2.pack(side=LEFT)
 textbox2.drop_target_register(tkdnd.DND_FILES)
 textbox2.dnd_bind("<<Drop>>", DisplayImage2)
 
-frame3 = Frame(app, background="#39393F")
 
 
 textbox3 = customtkinter.CTkLabel(
-    frame3, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
+    app, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
-textbox3.pack(side=LEFT)
 textbox3.drop_target_register(tkdnd.DND_FILES)
 textbox3.dnd_bind("<<Drop>>", DisplayImage3)
 
-frame4 = Frame(app, background="#39393F")
 
 textbox4 = customtkinter.CTkLabel(
-    frame4, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
+    app, height=40, width=120, text="Drop Style Here", text_color="white",bg_color="grey"
 )
-textbox4.pack(side=LEFT)
 textbox4.drop_target_register(tkdnd.DND_FILES)
 textbox4.dnd_bind("<<Drop>>", DisplayImage4)
 
