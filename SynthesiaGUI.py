@@ -5,6 +5,7 @@ import tkinterdnd2 as tkdnd
 from PIL import Image
 from tkinter import filedialog
 
+import subprocess
 import sys
 import os
 
@@ -17,6 +18,8 @@ sys.path.append("Music-Visualizer")
 import gansynth
 import visualizer
 
+cwd = "."
+# cwd = os.getcwd()
 midway_output_dir = "midway"
 
 model_gansynth = gansynth.setup()
@@ -154,9 +157,6 @@ def DisplayImage4(event):
         im4.save("style_ref/03.png")
         frame4.place_forget()
 
-
-
-
 # def append_list(arg, list):
 #     sys.argv.append(arg)
 #     for num in list:
@@ -193,9 +193,16 @@ def generation_process():
     app.update_idletasks()
 
     sys.argv = [basic_arg]
-    sys.argv += ["-i", f"{midway_output_dir}/{fname}_gansynth.mp3",
-                 "-ff", "/usr/bin/ffmpeg",
-                 "-o", f"{midway_output_dir}"]
+    sys.argv += [
+        "-i",
+        f"{midway_output_dir}/{fname}_gansynth.mp3",
+        "-o",
+        f"{midway_output_dir}",
+    ]
+    if sys.platform == "linux" or sys.platform == "linux2":
+        sys.argv += ["-ff", "/usr/bin/ffmpeg"]
+    elif sys.platform == "darwin":
+        sys.argv += ["-ff", "/usr/local/Cellar/ffmpeg/6.0/bin/ffmpeg"]
     visualizer.main()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
@@ -211,16 +218,21 @@ def generation_process():
     # style_frames.module_run()
     # this unfortunately does not work because of the previews use of
     # tf.compat.v1 for gansynth, using a different process instead
-    arguments = f"-i {midway_output_dir}/{fname}_gansynth_spectr.mp4 -d output -o synthesia_art"
+    arguments = (
+        f"-i {cwd}/{midway_output_dir}/{fname}_gansynth_spectr.mp4 -d {cwd}/output -o synthesia_art"
+        # f"-i /Users/macdonald/Desktop/CPAC/real-time-style-transfer/scope_intero.mp4 -d {cwd}/output -o synthesia_art"
+    )
     arguments += append_list(" -ss", instr_list)
     arguments += append_list(" -ts", time_list)
-    arguments += f" -mf {midway_output_dir} -sf style_ref"
+    arguments += f" -mf {cwd}/{midway_output_dir} -sf {cwd}/style_ref"
     arguments += " --fps 24"
-    os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
+    # os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
+    command = ["python", "style-transfer-video-processor/style_frames.py"]
+    command += arguments.split(" ")
+    # os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
+    subprocess.call(command)
     textboxInfo.configure(app,text="Video saved in the ouput folder", text_color="white")
     app.update_idletasks()
-
-
 
 
 def generate():
