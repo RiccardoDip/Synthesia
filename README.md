@@ -1,6 +1,6 @@
 # Synthesia
 
-Introducing Synthesia: We introduce Synthesia: An adaptable graphical instrument that enables you to perceive timbre transformation through visual elements.
+We introduce Synthesia: An adaptable graphical instrument that enables you to perceive timbre transformation through visual elements.
 
 Our perspective on Synthesia embraces its function as not only a dynamic tool for live performances but also as a standalone application committed to the creation of imaginative videos. Synthesia comprises two separate elements: Synthesia-Live and SynthesiApp.
 
