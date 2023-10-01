@@ -57,6 +57,14 @@ Synthesia-Live operates by opening Nsynth (Magenta's software) within Ableton an
 ### Instructions
 To use Synthesia-Live, start by opening Nsynth in Ableton and send the interpolation value via the Connection Kit. Once you've confirmed that Nsynth's output is readable as your computer's audio input, run the SynthesiaLIVE.py file followed by the sketch_3D_Spectrum_2.pde file. Now, you can enjoy altering the Nsynth interpolation value and experience real-time visual feedback.
 
+## Modules 
+https://github.com/westgarthb/style-transfer-video-processor
+https://github.com/magenta/magenta/tree/main/magenta/models/gansynth
+https://github.com/peregoniccolo/real-time-style-transfer
+https://github.com/nvfp/Music-Visualizer
+
+
+
 ![Alt text](images/SynthesiaLiveSpec.png)
 
 ![Alt text](images/SynthesiaLiveStyled.png)
