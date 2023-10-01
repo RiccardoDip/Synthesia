@@ -12,3 +12,5 @@ output/*
 magenta
 Music-Visualizer
 style-transfer-video-processor
+
+*.yml
