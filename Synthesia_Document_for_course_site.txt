@@ -1,0 +1,44 @@
+Title: 
+
+Synthesia
+
+1-line Description: 
+
+A multiplatform graphical instrument able to make you experience timbre moprhing through visuals.
+
+
+Description: 
+
+We envisioned Synthesia as both a live performance tool and a standalone application for generating creative videos. It is divided in two parts: Synthesia-Live and SynthesiApp.
+Synthesia-Live works in real time, applying style transfer to the spectrogram of the incoming audio. The style transfer uses two different styles, blended accordingly to the settings of the timbre morphing.
+SynthesiApp is a Python Application which allows the user to load a MIDI file and generate a video containing the spectrogram of the audio generated from the MIDI file, which morphs between different styles. The audio generated goes through the process of timbre transfer, which can be set by the user, and which controls the morphing of the video styles
+
+Challenges:
+
+Creating both a real time and non real time application, connecting the timbre transitions with the styles' ones, training the models for the style transfer through a big number of epochs.
+
+Accomplishments:
+
+We are very proud of the final result, specifically we managed to connect different blocks to work together, in both the applications. We have been able to work on a variety of platforms such as Processing, Ableton Live and Google Colab.
+
+What did we learned: 
+
+We learned to train neural models, to deal with a creative project and to understand in deep all the technologies used.
+
+Technology: 
+
+Python, Processing, Colab, Ableton Live, Magenta Studio, Style Transfer, Tensorflow, Timbre Morphing, OSC, Socket, Chainer.
+
+Students: 
+
+Riccardo di Palma - Training Neural Models, OSC messages handle, "SynthesiApp" GUI implementation, Presentation Slides 
+Edoardo Morena - Training Neural Models, Project design, "Synthesia-Live" Python-Processing connection and video generation
+Alessandro Orsatti - Training Neural Models, OSC messages handle, "Synthesia-Live" design and Python-Processing connection, Video production
+Niccolò Perego - Training Neural Models, Module managing and merging, both real-time and non-real-time style transfer algorithm update and maintainance, Gansynth offline porting
+
+
+Thumbnail Image: https://drive.google.com/file/d/1fLMz5JBHe8_mLzkblzwax-_14fvbjiSf/view?usp=sharing
+
+Pictures: https://drive.google.com/file/d/1_VeIn7U6CpNiXHxENcwETDdOu3cvccU2/view?usp=sharing
+
+Video: 
