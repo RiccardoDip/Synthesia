@@ -65,10 +65,11 @@ To use Synthesia-Live, start by opening Nsynth in Ableton and send the interpola
 
 
 ## Modules 
-https://github.com/westgarthb/style-transfer-video-processor
+https://github.com/peregoniccolo/Music-Visualizer
 
-https://github.com/magenta/magenta/tree/main/magenta/models/gansynth
+https://github.com/peregoniccolo/style-transfer-video-processor
 
 https://github.com/peregoniccolo/real-time-style-transfer
 
-https://github.com/nvfp/Music-Visualizer
+https://github.com/peregoniccolo/real-time-style-transfer
+
