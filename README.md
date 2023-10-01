@@ -7,6 +7,7 @@ Our perspective on Synthesia embraces its function as not only a dynamic tool fo
 ## SynthesiApp
 ### Features
 SynthesiApp is a Python-based application that lets users load MIDI files and generate videos featuring audio spectrogram transformations, seamlessly transitioning between various styles. The audio generated undergoes a customizable timbre transfer process, giving users complete control over the video's style morphing timestamps.
+
 ![Alt text](images/SynthesiaApp.png)
 
 ### Workflow
