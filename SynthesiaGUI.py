@@ -15,18 +15,18 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # disable GPU for gansynth
 basic_arg = sys.argv[0]
 sys.path.append("magenta")
 sys.path.append("Music-Visualizer")
-import gansynth
-import visualizer
+# import gansynth
+# import visualizer
 
 cwd = "."
 # cwd = os.getcwd()
 midway_output_dir = "midway"
 
-model_gansynth = gansynth.setup()
-gansynth.set_output_dir(midway_output_dir)
-audio_note_list = None
-z_preview = None
-notes = None
+# model_gansynth = gansynth.setup()
+# gansynth.set_output_dir(midway_output_dir)
+# audio_note_list = None
+# z_preview = None
+# notes = None
 
 
 def select_midi_seq():
@@ -39,12 +39,12 @@ def select_midi_seq():
         alertWF.configure(
             app, text="MIDI file loaded correctly", text_color="lightgreen"
         )
-        alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        alertWF.place(relx=0.5, rely=0.15, anchor=CENTER)
         instButton.configure(state="normal")
 
     else:
         alertWF.configure(app, text="Please choose a MIDI FIle", text_color="red")
-        alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        alertWF.place(relx=0.5, rely=0.15, anchor=CENTER)
         instButton.configure(state=DISABLED)
     root.destroy()
 
@@ -60,12 +60,12 @@ def DisplayMidiFile(event):
         alertWF.configure(
             app, text="MIDI file loaded correctly", text_color="lightgreen"
         )
-        alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        alertWF.place(relx=0.5, rely=0.15, anchor=CENTER)
         instButton.configure(state="normal")
 
     else:
         alertWF.configure(app, text="Please choose a MIDI FIle", text_color="red")
-        alertWF.place(relx=0.5, rely=0.25, anchor=CENTER)
+        alertWF.place(relx=0.5, rely=0.15, anchor=CENTER)
         instButton.configure(state=DISABLED)
     print(file_path)
 
@@ -87,7 +87,7 @@ def DisplayImage1(event):
         image_display1.configure(
             app, image=image1, text=None, width=100, height=100, state=DISABLED
         )
-        image_display1.place(relx=0.2, rely=0.70, anchor=CENTER)
+        image_display1.place(relx=0.2, rely=0.57, anchor=CENTER)
         im1.save("style_ref/00.png")
         textbox1.place_forget()
 
@@ -109,7 +109,7 @@ def DisplayImage2(event):
         image_display2.configure(
             app, image=image2, text=None, width=100, height=100, state=DISABLED
         )
-        image_display2.place(relx=0.4, rely=0.70, anchor=CENTER)
+        image_display2.place(relx=0.4, rely=0.57, anchor=CENTER)
         im2.save("style_ref/01.png")
         textbox2.place_forget()
 
@@ -131,7 +131,7 @@ def DisplayImage3(event):
         image_display3.configure(
             app, image=image3, text=None, width=100, height=100, state=DISABLED
         )
-        image_display3.place(relx=0.6, rely=0.70, anchor=CENTER)
+        image_display3.place(relx=0.6, rely=0.57, anchor=CENTER)
         im3.save("style_ref/02.png")
         textbox3.place_forget()
 
@@ -153,7 +153,7 @@ def DisplayImage4(event):
         image_display4.configure(
             app, image=image4, text=None, width=100, height=100, state=DISABLED
         )
-        image_display4.place(relx=0.8, rely=0.70, anchor=CENTER)
+        image_display4.place(relx=0.8, rely=0.57, anchor=CENTER)
         im4.save("style_ref/03.png")
         textbox4.place_forget()
 
@@ -184,9 +184,9 @@ def generation_process():
     app.update_idletasks()
     instr_list, time_list = create_sequences()
 
-    gansynth.generate_audio(
-        model_gansynth, z_preview, notes, instr_list, time_list, f'{fname}_gansynth'
-    )
+    # gansynth.generate_audio(
+    #     model_gansynth, z_preview, notes, instr_list, time_list, f'{fname}_gansynth'
+    # )
 
     # os.system('__main__.py -i gansynth/samples/generated_clip_1.mp3 -ff /usr/lib/ffmpeg')
     textboxInfo.configure(app,text="Creating Video Spectrogram", text_color="white")
@@ -203,7 +203,7 @@ def generation_process():
         sys.argv += ["-ff", "/usr/bin/ffmpeg"]
     elif sys.platform == "darwin":
         sys.argv += ["-ff", "/usr/local/Cellar/ffmpeg/6.0/bin/ffmpeg"]
-    visualizer.main()
+    #visualizer.main()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     textboxInfo.configure(app,text="Applying style transfer", text_color="white")
@@ -247,19 +247,19 @@ def generate():
         print(f"num: {num_instr}")
         print(f"midi path: {midi_path_str}")
 
-        audio_note_list, z_preview, notes = gansynth.generate_instruments(
-            model_gansynth, midi_path_str, num_instr
-        )
+        # audio_note_list, z_preview, notes = gansynth.generate_instruments(
+        #     model_gansynth, midi_path_str, num_instr
+        # )
 
         if display_inst.get() == False:
             # trans_label.pack()
 
             if inst_label._text == 2:
-                Inst1Btn.place(relx=0.2, rely=0.50, anchor=CENTER)
-                Inst2Btn.place(relx=0.4, rely=0.50, anchor=CENTER)
-                gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
-                textbox1.place(relx=0.2, rely=0.65, anchor=CENTER)
-                textbox2.place(relx=0.4, rely=0.65, anchor=CENTER)
+                Inst2Btn.place(relx=0.4, rely=0.40, anchor=CENTER)
+                Inst1Btn.place(relx=0.2, rely=0.40, anchor=CENTER)
+                gsButton.place(relx=0.5, rely=0.75, anchor=CENTER)
+                textbox1.place(relx=0.2, rely=0.55, anchor=CENTER)
+                textbox2.place(relx=0.4, rely=0.55, anchor=CENTER)
                 textboxInfo.configure(app,text="Instruments Generated! Drop style images, otherwise the default ones will be used", text_color="white")
                 app.update_idletasks()
 
@@ -284,14 +284,14 @@ def generate():
 
             if inst_label._text == 3:
                 gsButton.place_forget()
-                Inst1Btn.place(relx=0.2, rely=0.50, anchor=CENTER)
-                transition1.place(relx=0.4, rely=0.55, anchor=CENTER)
-                Inst2Btn.place(relx=0.4, rely=0.50, anchor=CENTER)
-                Inst3Btn.place(relx=0.6, rely=0.50, anchor=CENTER)
-                gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
-                textbox1.place(relx=0.2, rely=0.65, anchor=CENTER)
-                textbox2.place(relx=0.4, rely=0.65, anchor=CENTER)
-                textbox3.place(relx=0.6, rely=0.65, anchor=CENTER)
+                Inst1Btn.place(relx=0.2, rely=0.40, anchor=CENTER)
+                transition1.place(relx=0.4, rely=0.45, anchor=CENTER)
+                Inst2Btn.place(relx=0.4, rely=0.40, anchor=CENTER)
+                Inst3Btn.place(relx=0.6, rely=0.40, anchor=CENTER)
+                gsButton.place(relx=0.5, rely=0.75, anchor=CENTER)
+                textbox1.place(relx=0.2, rely=0.55, anchor=CENTER)
+                textbox2.place(relx=0.4, rely=0.55, anchor=CENTER)
+                textbox3.place(relx=0.6, rely=0.55, anchor=CENTER)
 
                 if Inst4Btn.winfo_viewable() == 1:
                     Inst4Btn.place_forget()
@@ -312,19 +312,19 @@ def generate():
 
             if inst_label._text == 4:
                 gsButton.place_forget()
-                Inst1Btn.place(relx=0.2, rely=0.50, anchor=CENTER)
-                transition1.place(relx=0.4, rely=0.55, anchor=CENTER)
-                Inst2Btn.place(relx=0.4, rely=0.50, anchor=CENTER)
+                Inst1Btn.place(relx=0.2, rely=0.40, anchor=CENTER)
+                transition1.place(relx=0.4, rely=0.45, anchor=CENTER)
+                Inst2Btn.place(relx=0.4, rely=0.40, anchor=CENTER)
                 # trans_label.pack()
-                transition2.place(relx=0.6, rely=0.55, anchor=CENTER)
-                Inst3Btn.place(relx=0.6, rely=0.50, anchor=CENTER)
+                transition2.place(relx=0.6, rely=0.45, anchor=CENTER)
+                Inst3Btn.place(relx=0.6, rely=0.40, anchor=CENTER)
                 # transition3.place(relx=0.8,rely=0.55,anchor=CENTER)
-                Inst4Btn.place(relx=0.8, rely=0.50, anchor=CENTER)
-                textbox1.place(relx=0.2, rely=0.65, anchor=CENTER)
-                textbox2.place(relx=0.4, rely=0.65, anchor=CENTER)
-                textbox3.place(relx=0.6, rely=0.65, anchor=CENTER)
-                textbox4.place(relx=0.8, rely=0.65, anchor=CENTER)
-                gsButton.place(relx=0.5, rely=0.85, anchor=CENTER)
+                Inst4Btn.place(relx=0.8, rely=0.40, anchor=CENTER)
+                textbox1.place(relx=0.2, rely=0.55, anchor=CENTER)
+                textbox2.place(relx=0.4, rely=0.55, anchor=CENTER)
+                textbox3.place(relx=0.6, rely=0.55, anchor=CENTER)
+                textbox4.place(relx=0.8, rely=0.55, anchor=CENTER)
+                gsButton.place(relx=0.5, rely=0.75, anchor=CENTER)
                 textboxInfo.configure(app,text="Instruments Generated! Select transition time and drop style images, otherwise the default ones will be used", text_color="white")
                 app.update_idletasks()
             display_inst.set(True)
@@ -409,6 +409,7 @@ def create_sequences():
 app = tkdnd.Tk()
 app.geometry("780x680")
 app.resizable(0, 0)
+app.title("Synthesia")
 app.config(bg="#39393F")
 
 
@@ -451,47 +452,40 @@ midi_path = customtkinter.CTkLabel(app, text="")
 
 path_var = customtkinter.StringVar()
 
-# finishLabel = customtkinter.CTkLabel(app, text="or", text_color="white")
-# finishLabel.place(relx=0.5, rely=0.15, anchor=CENTER)
-
-# browseButton = customtkinter.CTkButton(
-#     app, text="Browse for a MIDI File", command=select_midi_seq
-# )
-# browseButton.place(relx=0.5, rely=0.20, anchor=CENTER)
 
 
 inst_label = customtkinter.CTkLabel(
     app, text="Select number of random instruments", text_color="white"
 )
-inst_label.place(relx=0.5, rely=0.29, anchor=CENTER)
+inst_label.place(relx=0.5, rely=0.19, anchor=CENTER)
 
 
 inst_label = customtkinter.CTkLabel(app, text=2, text_color="white")
-inst_label.place(relx=0.5, rely=0.32, anchor=CENTER)
+inst_label.place(relx=0.5, rely=0.22, anchor=CENTER)
 
 inst_slider = customtkinter.CTkSlider(
     app, from_=2, to=4, number_of_steps=2, command=updatelabel, width=400
 )
 inst_slider.set(0)
-inst_slider.place(relx=0.5, rely=0.35, anchor=CENTER)
+inst_slider.place(relx=0.5, rely=0.25, anchor=CENTER)
 
 
 instButton = customtkinter.CTkButton(
     app, text="Generate Instruments", command=generate, state=DISABLED
 )
-instButton.place(relx=0.5, rely=0.40, anchor=CENTER)
+instButton.place(relx=0.5, rely=0.30, anchor=CENTER)
 
 Inst1Btn = customtkinter.CTkButton(
-    app, text="Inst.1", command=lambda: gansynth.play_audio_array(audio_note_list[0])
+    app, text="Inst.1", #command=lambda: gansynth.play_audio_array(audio_note_list[0])
 )
 Inst2Btn = customtkinter.CTkButton(
-    app, text="Inst.2", command=lambda: gansynth.play_audio_array(audio_note_list[1])
+    app, text="Inst.2", #command=lambda: gansynth.play_audio_array(audio_note_list[1])
 )
 Inst3Btn = customtkinter.CTkButton(
-    app, text="Inst.3",  command=lambda: gansynth.play_audio_array(audio_note_list[2])
+    app, text="Inst.3",  #command=lambda: gansynth.play_audio_array(audio_note_list[2])
 )
 Inst4Btn = customtkinter.CTkButton(
-    app, text="Inst.4", command=lambda: gansynth.play_audio_array(audio_note_list[3])
+    app, text="Inst.4", #command=lambda: gansynth.play_audio_array(audio_note_list[3])
 )
 
 generating = customtkinter.BooleanVar(app, False)
