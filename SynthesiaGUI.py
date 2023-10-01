@@ -439,13 +439,13 @@ midi_path = customtkinter.CTkLabel(app, text="")
 
 path_var = customtkinter.StringVar()
 
-finishLabel = customtkinter.CTkLabel(app, text="or", text_color="white")
-finishLabel.place(relx=0.5, rely=0.15, anchor=CENTER)
+# finishLabel = customtkinter.CTkLabel(app, text="or", text_color="white")
+# finishLabel.place(relx=0.5, rely=0.15, anchor=CENTER)
 
-browseButton = customtkinter.CTkButton(
-    app, text="Browse for a MIDI File", command=select_midi_seq
-)
-browseButton.place(relx=0.5, rely=0.20, anchor=CENTER)
+# browseButton = customtkinter.CTkButton(
+#     app, text="Browse for a MIDI File", command=select_midi_seq
+# )
+# browseButton.place(relx=0.5, rely=0.20, anchor=CENTER)
 
 
 inst_label = customtkinter.CTkLabel(
@@ -470,16 +470,16 @@ instButton = customtkinter.CTkButton(
 instButton.place(relx=0.5, rely=0.40, anchor=CENTER)
 
 Inst1Btn = customtkinter.CTkButton(
-    app, text="Inst.1", #command=lambda: gansynth.play_audio_array(audio_note_list[0])
+    app, text="Inst.1", command=lambda: gansynth.play_audio_array(audio_note_list[0])
 )
 Inst2Btn = customtkinter.CTkButton(
-    app, text="Inst.2", #command=lambda: gansynth.play_audio_array(audio_note_list[1])
+    app, text="Inst.2", command=lambda: gansynth.play_audio_array(audio_note_list[1])
 )
 Inst3Btn = customtkinter.CTkButton(
-    app, text="Inst.3",  #command=lambda: gansynth.play_audio_array(audio_note_list[2])
+    app, text="Inst.3",  command=lambda: gansynth.play_audio_array(audio_note_list[2])
 )
 Inst4Btn = customtkinter.CTkButton(
-    app, text="Inst.4", #command=lambda: gansynth.play_audio_array(audio_note_list[3])
+    app, text="Inst.4", command=lambda: gansynth.play_audio_array(audio_note_list[3])
 )
 
 generating = customtkinter.BooleanVar(app, False)

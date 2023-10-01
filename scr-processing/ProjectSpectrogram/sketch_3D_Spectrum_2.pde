@@ -56,7 +56,7 @@ void setup()
   out = minim.getLineOut();
 
   jpg_v2 = new JPGEncoderV2();
-  microphone = minim.getLineIn(Minim.STEREO, 4096); //repeat the song
+  microphone = minim.getLineIn(Minim.MONO, 4096); //repeat the song
 
   background(255);
 
