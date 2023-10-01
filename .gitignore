@@ -9,8 +9,11 @@ style_ref/*
 midway/*
 output/*
 
+to_remove
+
 magenta
 Music-Visualizer
 style-transfer-video-processor
+real-time-style-transfer
 
 *.yml

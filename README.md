@@ -8,12 +8,12 @@ Our perspective on Synthesia embraces its function as not only a dynamic tool fo
 ### Features
 SynthesiApp is a Python-based application that lets users load MIDI files and generate videos featuring audio spectrogram transformations, seamlessly transitioning between various styles. The audio generated undergoes a customizable timbre transfer process, giving users complete control over the video's style morphing timestamps.
 
-![Alt text](images/SynthesiaApp.png)
+![Alt text](deliverables/images/SynthesiaApp.png)
 
 ### Workflow
-Through its GUI, SynthesiApp allows users to input a MIDI file for GANSynth to process, specifying the number of instruments for timbre interpolation (ranging from 2 to 4) and providing timestamps utilized by both GANSynth for audio file creation and StyleTransfer for generating the final video. The GUI also enables users to select the images used for style transfer. Meanwhile, behind the scenes, Music-Visualizer is employed to generate the spectrogram video, which is subsequently subjected to the style transfer process.
+Through its GUI, SynthesiApp allows users to input a MIDI file for GANSynth to process, specifying the number of instruments for timbre interpolation (ranging from 2 to 4) and providing timestamps utilized by both GANSynth for audio file creation and StyleTransfer for generating the final video. The GUI also enables users to select the deliverables/images used for style transfer. Meanwhile, behind the scenes, Music-Visualizer is employed to generate the spectrogram video, which is subsequently subjected to the style transfer process.
 
-![Alt text](images/gui_synthesia.png)
+![Alt text](deliverables/images/gui_synthesia.png)
 ### Instructions
 
 ### Environment setup LINUX
@@ -59,16 +59,25 @@ To use Synthesia-Live, start by opening Nsynth in Ableton and send the interpola
 
 
 
-![Alt text](images/SynthesiaLiveSpec.png)
+![Alt text](deliverables/images/SynthesiaLiveSpec.png)
 
-![Alt text](images/SynthesiaLiveStyled.png)
+![Alt text](deliverables/images/SynthesiaLiveStyled.png)
 
 
 ## Modules 
-https://github.com/westgarthb/style-transfer-video-processor
+- https://github.com/cpuguy96/real-time-style-transfer
 
-https://github.com/magenta/magenta/tree/main/magenta/models/gansynth
+- https://github.com/magenta/magenta/tree/main/magenta/models/gansynth
 
-https://github.com/peregoniccolo/real-time-style-transfer
+- https://github.com/nvfp/Music-Visualizer
 
-https://github.com/nvfp/Music-Visualizer
+- https://github.com/westgarthb/style-transfer-video-processor
+
+Our forks:
+- https://github.com/peregoniccolo/real-time-style-transfer
+
+- https://github.com/peregoniccolo/magenta
+
+- https://github.com/peregoniccolo/Music-Visualizer
+
+- https://github.com/peregoniccolo/style-transfer-video-processor

@@ -21,11 +21,10 @@ then
     git clone https://github.com/peregoniccolo/style-transfer-video-processor
 fi
 
-# if [ ! -d style-transfer-video-processor/local_module ]
-# then
-#     mkdir style-transfer-video-processor/local_module
-#     wget https://tfhub.dev/google/magenta/arbitrary-image-stylization-v1-256/2?tf-hub-format=compressed
-#     unzip magenta_arbitrary-image-stylization-v1-256_2.tar.gz -d style-transfer-video-processor/local_module
-#     rm magenta_arbitrary-image-stylization-v1-256_2.tar.gz
-# fi
+if [ ! -d real-time-style-transfer ]
+then
+    echo GATHERING REAL-TIME-STYLE-TRANSFER
+    git clone https://github.com/peregoniccolo/real-time-style-transfer
+fi
+
 echo ALL DONE

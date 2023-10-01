@@ -15,8 +15,8 @@ os.environ["CUDA_VISIBLE_DEVICES"] = "-1"  # disable GPU for gansynth
 basic_arg = sys.argv[0]
 sys.path.append("magenta")
 sys.path.append("Music-Visualizer")
-# import gansynth
-# import visualizer
+import gansynth
+import visualizer
 
 midway_output_dir = "midway"
 
@@ -185,9 +185,9 @@ def generation_process():
     app.update_idletasks()
     instr_list, time_list = create_sequences()
 
-    # gansynth.generate_audio(
-    #     model_gansynth, z_preview, notes, instr_list, time_list, f'{fname}_gansynth'
-    # )
+    gansynth.generate_audio(
+        model_gansynth, z_preview, notes, instr_list, time_list, f'{fname}_gansynth'
+    )
 
     # os.system('__main__.py -i gansynth/samples/generated_clip_1.mp3 -ff /usr/lib/ffmpeg')
     textboxInfo.configure(app,text="Creating Video Spectrogram", text_color="white")
@@ -204,7 +204,7 @@ def generation_process():
         sys.argv += ["-ff", "/usr/bin/ffmpeg"]
     elif sys.platform == "darwin":
         sys.argv += ["-ff", "/usr/local/Cellar/ffmpeg/6.0/bin/ffmpeg"]
-    #visualizer.main()
+    visualizer.main()
 
     os.environ["CUDA_VISIBLE_DEVICES"] = "0"
     textboxInfo.configure(app,text="Applying style transfer", text_color="white")
@@ -226,7 +226,7 @@ def generation_process():
     arguments += append_list(" -ss", instr_list)
     arguments += append_list(" -ts", time_list)
     arguments += f" -mf {midway_output_dir} -sf style_ref"
-    arguments += " --fps 10"
+    arguments += " --fps 30"
     #arguments += f" -a {midway_output_dir}/{fname}_gansynth.mp3 --no_audio"
     # os.system(f"python style-transfer-video-processor/style_frames.py {arguments}")
     command = ["python", "style-transfer-video-processor/style_frames.py"]
@@ -249,9 +249,9 @@ def generate():
         print(f"num: {num_instr}")
         print(f"midi path: {midi_path_str}")
 
-        # audio_note_list, z_preview, notes = gansynth.generate_instruments(
-        #     model_gansynth, midi_path_str, num_instr
-        # )
+        audio_note_list, z_preview, notes = gansynth.generate_instruments(
+            model_gansynth, midi_path_str, num_instr
+        )
 
         if display_inst.get() == False:
             # trans_label.pack()
