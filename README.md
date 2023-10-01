@@ -69,7 +69,7 @@ https://github.com/peregoniccolo/Music-Visualizer
 
 https://github.com/peregoniccolo/style-transfer-video-processor
 
-https://github.com/peregoniccolo/real-time-style-transfer
+https://github.com/peregoniccolo/magenta
 
 https://github.com/peregoniccolo/real-time-style-transfer
 
