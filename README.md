@@ -1,5 +1,15 @@
-# CpacVideo
-## OFFLINE
+# Synthesia
+
+We introduce Synthesia: An adaptable graphical instrument that enables you to perceive timbre transformation through visual elements.
+
+Our perspective on Synthesia embraces its function as not only a dynamic tool for live performances but also as a standalone application committed to the creation of imaginative videos. Synthesia comprises two separate elements: Synthesia-Live and SynthesiApp.
+
+## SynthesiApp
+### Features
+SynthesiApp is a Python-based application that lets users load MIDI files and generate videos featuring audio spectrogram transformations, seamlessly transitioning between various styles. The audio generated undergoes a customizable timbre transfer process, giving users complete control over the video's style morphing timestamps.
+
+<video src="videos/synthesia_art.mp4" controls title="Title"></video>
+
 ### Environment setup LINUX
 Create a the conda environment to work locally with:
 ```
@@ -28,3 +38,12 @@ You can verify the installation with:
 python3 -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 ```
 This is an adaptation of the official tensorflow w/o GPU <a href="https://www.tensorflow.org/install/pip?hl=it">installation guide</a>.r
+
+## Synthesia-Live
+### Features
+Synthesia-Live operates in real-time, applying style transfer techniques to the incoming audio's spectrogram. This process combines two distinct styles in accordance with the user's timbre morphing preferences.
+
+![Alt text](images/SynthesiaLiveSpec.png)
+
+![Alt text](images/SynthesiaLiveStyled.png)
+### Environment setup
