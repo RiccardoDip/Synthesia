@@ -1,0 +1,10 @@
+sounddevice
+soundfile
+tensorflow_gan
+numpy>=1.19.5
+tensorflow>=2.4.1
+tensorflow-hub>=0.11.0
+tqdm>=4.51.0
+moviepy>=1.0.3
+customtkinter
+tkinterdnd2

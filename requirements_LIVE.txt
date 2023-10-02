@@ -1,0 +1,4 @@
+chainer
+opencv-python
+Pillow
+numpy
