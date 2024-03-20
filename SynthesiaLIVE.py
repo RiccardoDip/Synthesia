@@ -20,7 +20,7 @@ path_to_presets = "real-time-style-transfer/chainer-fast-neuralstyle/models/pres
 path_to_user_models = "real-time-style-transfer/chainer-fast-neuralstyle/models/"
 
 m_path_dict = {
-    0: f"{path_to_user_models}picasso/final_ep_picasso_6.model",
+    0: f"{path_to_user_models}picasso/final_ep_picasso_7.model", 
     1: f"{path_to_user_models}onde-overlay-75-25/final_ep_onde-overlay-75-25_10.model",
     2: f"{path_to_user_models}onde-overlay-50-50/final_ep_onde-overlay-50-50_10.model",
     3: f"{path_to_user_models}onde-overlay-25-75/final_ep_onde-overlay-25-75_9.model",
@@ -94,7 +94,7 @@ if __name__ == "__main__":
     loaded = False
     closed = False
 
-    cv2.namedWindow("style")
+    cv2.namedWindow("style", cv2.WINDOW_GUI_NORMAL)
     cv2.createTrackbar("slider", "style", 0, 100, on_change)
 
     mpath = "none"
